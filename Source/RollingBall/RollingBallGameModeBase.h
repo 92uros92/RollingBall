@@ -6,9 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "RollingBallGameModeBase.generated.h"
 
-/**
- * 
- */
+
+
 UCLASS()
 class ROLLINGBALL_API ARollingBallGameModeBase : public AGameModeBase
 {
