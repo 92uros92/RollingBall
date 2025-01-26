@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Controller.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -32,12 +33,26 @@ ABallPawn::ABallPawn()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->bUsePawnControlRotation = false;
 	CameraComp->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+
+	// Don't rotate when the controller rotates. Let that just affect the camera.
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 }
 
 void ABallPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(BPMappingContext, 0);
+		}
+	}
+
+	BallMesh = FindComponentByClass<UStaticMeshComponent>();
 }
 
 void ABallPawn::Tick(float DeltaTime)
@@ -50,5 +65,17 @@ void ABallPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ABallPawn::MovePawn);
+	}
+}
+
+void ABallPawn::MovePawn(const FInputActionValue& Value)
+{
+	FVector2D MoveVector = Value.Get<FVector2D>();
+
+	BallMesh->AddForce(FVector(MoveVector.X, MoveVector.Y, 0));
+	UE_LOG(LogTemp, Warning, TEXT("Pawn is moving!!"));
 }
 

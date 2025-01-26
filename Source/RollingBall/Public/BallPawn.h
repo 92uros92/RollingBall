@@ -33,13 +33,16 @@ protected:
 	class UCameraComponent* CameraComp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputMappingContext* ERMappingContext;
+	class UInputMappingContext* BPMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
-	class UInputAction* MoveAction;
+	class UInputAction* MovementAction;
 
 
 	virtual void BeginPlay() override;
+
+	void MovePawn(const FInputActionValue& Value);
+
 
 private:	
 
