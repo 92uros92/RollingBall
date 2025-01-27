@@ -7,10 +7,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "Components/PrimitiveComponent.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/InputComponent.h"
+#include "InputActionValue.h"
 
 
 
@@ -25,7 +27,7 @@ ABallPawn::ABallPawn()
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetUsingAbsoluteRotation(true);
 	SpringArm->SetRelativeRotation(FRotator(-30.0f, 0.0f, 0.0f));
-	SpringArm->TargetArmLength = 1000.0f;
+	SpringArm->TargetArmLength = 650.0f;
 	SpringArm->bEnableCameraLag = false;
 	SpringArm->CameraLagSpeed = 5.0f;
 	SpringArm->SetupAttachment(RootComponent);
@@ -48,11 +50,10 @@ void ABallPawn::BeginPlay()
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
+			Subsystem->ClearAllMappings();
 			Subsystem->AddMappingContext(BPMappingContext, 0);
 		}
 	}
-
-	BallMesh = FindComponentByClass<UStaticMeshComponent>();
 }
 
 void ABallPawn::Tick(float DeltaTime)
@@ -68,14 +69,26 @@ void ABallPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ABallPawn::MovePawn);
+		EnhancedInputComponent->BindAction(MouseAction, ETriggerEvent::Triggered, this, &ABallPawn::MouseMovement);
 	}
 }
 
 void ABallPawn::MovePawn(const FInputActionValue& Value)
 {
-	FVector2D MoveVector = Value.Get<FVector2D>();
+	FVector2D InputValue = Value.Get<FVector2D>();
 
-	BallMesh->AddForce(FVector(MoveVector.X, MoveVector.Y, 0));
-	UE_LOG(LogTemp, Warning, TEXT("Pawn is moving!!"));
+	FVector MovementVector = InputValue.X * CameraComp->GetForwardVector() + InputValue.Y * CameraComp->GetRightVector();
+	
+	BallMesh->AddForce(MovementVector);
+	//UE_LOG(LogTemp, Warning, TEXT("Pawn is moving!!"));
+}
+
+void ABallPawn::MouseMovement(const FInputActionValue& Value)
+{
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	SpringArm->AddLocalRotation(FRotator(MovementVector.Y, MovementVector.X, 0));
+	FRotator SpringArmRotation = SpringArm->GetRelativeRotation();
+	SpringArm->SetRelativeRotation(FRotator(SpringArmRotation.Pitch, SpringArmRotation.Yaw, 0));
 }
 

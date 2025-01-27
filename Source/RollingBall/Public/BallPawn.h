@@ -38,11 +38,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* MovementAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* MouseAction;
+
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
 	void MovePawn(const FInputActionValue& Value);
 
+	UFUNCTION()
+	void MouseMovement(const FInputActionValue& Value);
 
 private:	
 
