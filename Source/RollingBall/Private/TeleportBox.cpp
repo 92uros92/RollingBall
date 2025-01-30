@@ -53,6 +53,8 @@ void ATeleportBox::OnTeleporterExit(AActor* OverlappActor, AActor* OtherActor)
 		if (OtherTeleporter && !bIsTeleporting)
 		{
 			OtherTeleporter->bIsTeleporting = false;
+
+			// Always turn in one direction
 		}
 	}
 }
