@@ -6,13 +6,14 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/Controller.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/ArrowComponent.h"
 
 
 
 
 ATeleportBox::ATeleportBox()
 {
-	//TeleporterMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TeleporterMesh"));
+	PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
 
 	OnActorBeginOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterEnter);
 	OnActorEndOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterExit);
@@ -37,10 +38,19 @@ void ATeleportBox::OnTeleporterEnter(AActor* OverlappActor, AActor* OtherActor)
 			{
 				bIsTeleporting = true;
 
+				MyPawn->SetActorRotation(OtherTeleporter->PawnLook->GetComponentRotation());
+				MyPawn->GetController()->SetControlRotation(PawnLook->GetComponentRotation());
+
+				MyPawn->SetActorLocation(OtherTeleporter->GetActorLocation());
+
+				/*
+				
 				MyPawn->SetActorRotation(OtherTeleporter->GetActorRotation());
 				MyPawn->GetController()->SetControlRotation(MyPawn->GetActorRotation());
 
 				MyPawn->SetActorLocation(OtherTeleporter->GetActorLocation());
+
+				*/
 			}
 		}
 	}
