@@ -38,6 +38,9 @@ void ATeleportBox::OnTeleporterEnter(AActor* OverlappActor, AActor* OtherActor)
 			{
 				bIsTeleporting = true;
 
+				//FTransform NewTransform = 
+				//PawnLook->SetWorldTransform(OtherTeleporter->PawnLook->GetComponentRotation(), 0.0f, 0);
+
 				MyPawn->SetActorRotation(OtherTeleporter->PawnLook->GetComponentRotation());
 				MyPawn->GetController()->SetControlRotation(PawnLook->GetComponentRotation());
 
