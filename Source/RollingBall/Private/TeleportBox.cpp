@@ -13,7 +13,7 @@
 
 ATeleportBox::ATeleportBox()
 {
-	PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
+	// PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
 
 	OnActorBeginOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterEnter);
 	OnActorEndOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterExit);
@@ -38,22 +38,10 @@ void ATeleportBox::OnTeleporterEnter(AActor* OverlappActor, AActor* OtherActor)
 			{
 				bIsTeleporting = true;
 
-				//FTransform NewTransform = 
-				//PawnLook->SetWorldTransform(OtherTeleporter->PawnLook->GetComponentRotation(), 0.0f, 0);
-
-				MyPawn->SetActorRotation(OtherTeleporter->PawnLook->GetComponentRotation());
-				MyPawn->GetController()->SetControlRotation(PawnLook->GetComponentRotation());
-
-				MyPawn->SetActorLocation(OtherTeleporter->GetActorLocation());
-
-				/*
-				
 				MyPawn->SetActorRotation(OtherTeleporter->GetActorRotation());
 				MyPawn->GetController()->SetControlRotation(MyPawn->GetActorRotation());
 
 				MyPawn->SetActorLocation(OtherTeleporter->GetActorLocation());
-
-				*/
 			}
 		}
 	}
@@ -66,8 +54,6 @@ void ATeleportBox::OnTeleporterExit(AActor* OverlappActor, AActor* OtherActor)
 		if (OtherTeleporter && !bIsTeleporting)
 		{
 			OtherTeleporter->bIsTeleporting = false;
-
-			// Always turn in one direction
 		}
 	}
 }

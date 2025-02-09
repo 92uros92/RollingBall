@@ -22,12 +22,14 @@ ABallPawn::ABallPawn()
 
 	BallMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BallMesh"));
 	BallMesh->SetSimulatePhysics(true);
+	BallMesh->SetCollisionResponseToAllChannels(ECR_Block);
+	BallMesh->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	SetRootComponent(BallMesh);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetUsingAbsoluteRotation(true);
 	SpringArm->SetRelativeRotation(FRotator(-30.0f, 0.0f, 0.0f));
-	SpringArm->TargetArmLength = 650.0f;
+	SpringArm->TargetArmLength = 350.0f;
 	SpringArm->bEnableCameraLag = false;
 	SpringArm->CameraLagSpeed = 5.0f;
 	SpringArm->SetupAttachment(RootComponent);

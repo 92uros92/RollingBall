@@ -21,8 +21,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Teleporter")
 	ATeleportBox* OtherTeleporter;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Teleporter")
-	class UArrowComponent* PawnLook;
+	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Teleporter")
+	class UArrowComponent* PawnLook;*/
 
 	UPROPERTY()
 	bool bIsTeleporting;
