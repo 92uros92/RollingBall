@@ -13,4 +13,11 @@ class ROLLINGBALL_API ARollingBallGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+
+
+
+private:
+
+
 };
