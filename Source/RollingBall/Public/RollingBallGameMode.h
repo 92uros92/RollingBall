@@ -8,6 +8,10 @@
 
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinsCountChanged, int32, CoinsCount);
+
+
+
 UCLASS()
 class ROLLINGBALL_API ARollingBallGameMode : public AGameModeBase
 {
@@ -15,9 +19,20 @@ class ROLLINGBALL_API ARollingBallGameMode : public AGameModeBase
 	
 public:
 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
+	FOnCoinsCountChanged OnCoinsCountChanged;
 
+	UPROPERTY(VisibleAnywhere, Category = "Score")
+	int32 TotalCoins;
 
-private:
+	// ******** FUNCTIONS ******** //
+
+	ARollingBallGameMode();
+
+	UFUNCTION(BlueprintCallable)
+	void CountCoin();
+
+protected:
 
 
 };

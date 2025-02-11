@@ -2,12 +2,14 @@
 
 
 #include "BallPawn.h"
+#include "RollingBallGameMode.h"
 #include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "Components/PrimitiveComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -92,5 +94,16 @@ void ABallPawn::MouseMovement(const FInputActionValue& Value)
 	SpringArm->AddLocalRotation(FRotator(MovementVector.Y, MovementVector.X, 0));
 	FRotator SpringArmRotation = SpringArm->GetRelativeRotation();
 	SpringArm->SetRelativeRotation(FRotator(SpringArmRotation.Pitch, SpringArmRotation.Yaw, 0));
+}
+
+void ABallPawn::CountCoin()
+{
+	RollingBallGM = Cast<ARollingBallGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	if (RollingBallGM)
+	{
+		RollingBallGM->CountCoin();
+	}
+
 }
 

@@ -54,7 +54,8 @@ void ACoinPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent,	AAct
 			UGameplayStatics::PlaySoundAtLocation(GetWorld(), PickupSound, GetActorLocation());
 		}
 
-		// Call function to add coin
+		BallPawn->CountCoin();
+		UE_LOG(LogTemp, Warning, TEXT("Coin has been pick up."));
 
 		Destroy();
 	}

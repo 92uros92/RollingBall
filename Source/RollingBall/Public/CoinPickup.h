@@ -28,7 +28,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
 	class USoundBase* PickupSound;
 
-	// ******** FUNCTIONS ********
+	// ******** FUNCTIONS ******** //
 
 	ACoinPickup();
 

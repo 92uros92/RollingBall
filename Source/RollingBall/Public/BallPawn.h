@@ -21,6 +21,10 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION()
+	void CountCoin();
+
+
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
@@ -41,6 +45,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* MouseAction;
 
+	// ******** FUNCTIONS ******** //
 
 	virtual void BeginPlay() override;
 
@@ -52,5 +57,6 @@ protected:
 
 private:	
 
-
+	UPROPERTY(VisibleInstanceOnly)
+	class ARollingBallGameMode* RollingBallGM;
 };
