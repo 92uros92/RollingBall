@@ -6,9 +6,9 @@
 #include "GameFramework/HUD.h"
 #include "RollingBallHUD.generated.h"
 
-/**
- * 
- */
+
+
+
 UCLASS()
 class ROLLINGBALL_API ARollingBallHUD : public AHUD
 {

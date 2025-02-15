@@ -2,6 +2,9 @@
 
 
 #include "RollingBallGameMode.h"
+#include "BallPawn.h"
+#include "UI/ScreenWidget.h"
+#include "UI/RollingBallHUD.h"
 
 
 
@@ -11,6 +14,13 @@ ARollingBallGameMode::ARollingBallGameMode()
 	TotalCoins = 0;
 }
 
+void ARollingBallGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	ScreenWidget->InitializeWidget(this);
+}
+
 void ARollingBallGameMode::CountCoin()
 {
 	TotalCoins += 1;
@@ -18,3 +28,4 @@ void ARollingBallGameMode::CountCoin()
 
 	OnCoinsCountChanged.Broadcast(TotalCoins);
 }
+

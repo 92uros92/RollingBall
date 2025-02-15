@@ -45,8 +45,6 @@ void ACoinPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent,	AAct
 {
 	ABallPawn* BallPawn = Cast<ABallPawn>(OtherActor);
 
-	UE_LOG(LogTemp, Warning, TEXT("Coin has been pick up."));
-
 	if (BallPawn)
 	{
 		if (PickupSound)

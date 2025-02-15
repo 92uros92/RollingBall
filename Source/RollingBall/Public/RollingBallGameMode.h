@@ -25,6 +25,10 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Score")
 	int32 TotalCoins;
 
+	UPROPERTY(VisibleInstanceOnly, Category = "Widget")
+	class UScreenWidget* ScreenWidget;
+
+
 	// ******** FUNCTIONS ******** //
 
 	ARollingBallGameMode();
@@ -34,5 +38,5 @@ public:
 
 protected:
 
-
+	virtual void BeginPlay() override;
 };
