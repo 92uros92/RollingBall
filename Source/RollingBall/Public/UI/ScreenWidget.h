@@ -6,9 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "ScreenWidget.generated.h"
 
-/**
- * 
- */
+
+
+
 UCLASS()
 class ROLLINGBALL_API UScreenWidget : public UUserWidget
 {

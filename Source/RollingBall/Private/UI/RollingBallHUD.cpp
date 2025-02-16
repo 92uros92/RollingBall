@@ -7,6 +7,14 @@
 
 
 
+void ARollingBallHUD::InitializeOverlay(ARollingBallGameMode* RunGameMode)
+{
+	// zakljuèi HUD, tako da prikaže na zaslonu
+
+	UUserWidget* Widget = CreateWidget<UScreenWidget>(GetWorld(), OverlayWidgetClass);
+	Widget->AddToViewport();
+}
+
 void ARollingBallHUD::BeginPlay()
 {
 	Super::BeginPlay();

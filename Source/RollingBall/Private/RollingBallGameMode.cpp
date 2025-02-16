@@ -18,7 +18,12 @@ void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ScreenWidget->InitializeWidget(this);
+	// Ne prikaže pravilno na zaslonu
+	if (ScreenWidget)
+	{
+		ScreenWidget->InitializeWidget(this);
+		UE_LOG(LogTemp, Warning, TEXT("ScreenWidget working!!"));
+	}
 }
 
 void ARollingBallGameMode::CountCoin()

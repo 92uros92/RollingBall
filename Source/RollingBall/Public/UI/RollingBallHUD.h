@@ -19,6 +19,10 @@ public:
 	UPROPERTY()
 	class UScreenWidget* OverlayWidget;
 
+	// ******** FUNCTIONS ******** //
+
+	void InitializeOverlay(class ARollingBallGameMode* RunGameMode);
+
 protected:
 
 	virtual void BeginPlay() override;
