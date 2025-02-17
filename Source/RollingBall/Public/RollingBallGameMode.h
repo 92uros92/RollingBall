@@ -22,12 +22,14 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnCoinsCountChanged OnCoinsCountChanged;
 
-	UPROPERTY(VisibleAnywhere, Category = "Score")
+	UPROPERTY(VisibleAnywhere, Category = "Sccore")
 	int32 TotalCoins;
 
 	UPROPERTY(VisibleInstanceOnly, Category = "Widget")
 	class UScreenWidget* ScreenWidget;
 
+	UPROPERTY(VisibleInstanceOnly)
+	class ARollingBallHUD* RollingBallHUD;
 
 	// ******** FUNCTIONS ******** //
 

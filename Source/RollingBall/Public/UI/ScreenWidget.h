@@ -20,7 +20,7 @@ public:
 	void InitializeWidget(class ARollingBallGameMode* RunGameMode);
 
 	UFUNCTION(BlueprintCallable)
-	void SetCoinsCount(const int32 Count);
+	void SetCoinsCount(const int32 Value);
 
 protected:
 

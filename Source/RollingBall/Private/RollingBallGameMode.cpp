@@ -18,19 +18,20 @@ void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Ne prikaže pravilno na zaslonu
-	if (ScreenWidget)
-	{
-		ScreenWidget->InitializeWidget(this);
-		UE_LOG(LogTemp, Warning, TEXT("ScreenWidget working!!"));
-	}
 }
 
 void ARollingBallGameMode::CountCoin()
 {
-	TotalCoins += 1;
-	//UE_LOG(LogTemp, Warning, TEXT("Total Coins: %d"), TotalCoins);
+	RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 
-	OnCoinsCountChanged.Broadcast(TotalCoins);
+	if (RollingBallHUD)
+	{
+		TotalCoins += 1;
+		//UE_LOG(LogTemp, Warning, TEXT("Total Coins: %d"), TotalCoins);
+
+		OnCoinsCountChanged.Broadcast(TotalCoins);
+
+		RollingBallHUD->SetCoinsCount(TotalCoins);
+	}
 }
 

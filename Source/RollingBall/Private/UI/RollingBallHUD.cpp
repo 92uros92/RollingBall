@@ -3,22 +3,50 @@
 
 #include "UI/RollingBallHUD.h"
 #include "UI/ScreenWidget.h"
+#include "RollingBallGameMode.h"
 
 
 
 
-void ARollingBallHUD::InitializeOverlay(ARollingBallGameMode* RunGameMode)
+ARollingBallHUD::ARollingBallHUD()
 {
-	// zakljuèi HUD, tako da prikaže na zaslonu
 
-	UUserWidget* Widget = CreateWidget<UScreenWidget>(GetWorld(), OverlayWidgetClass);
-	Widget->AddToViewport();
+}
+
+void ARollingBallHUD::DrawHUD()
+{
+	Super::DrawHUD();
+
+	
 }
 
 void ARollingBallHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UUserWidget* Widget = CreateWidget<UScreenWidget>(GetWorld(), OverlayWidgetClass);
-	Widget->AddToViewport();
+	if (ScreenWidgetClass)
+	{
+		ScreenWidget = CreateWidget<UScreenWidget>(GetWorld(), ScreenWidgetClass);
+
+		if (ScreenWidget)
+		{
+			ScreenWidget->AddToViewport();
+		}
+	}
+}
+
+void ARollingBallHUD::SetCoinsCount(const int32 Value)
+{
+	if (ScreenWidget)
+	{
+		ScreenWidget->SetCoinsCount(Value);
+	}
+}
+
+void ARollingBallHUD::InitializeWidget(ARollingBallGameMode* RunGameMode)
+{
+	if (ScreenWidget)
+	{
+		ScreenWidget->InitializeWidget(RunGameMode);
+	}
 }

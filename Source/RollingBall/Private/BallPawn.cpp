@@ -3,6 +3,7 @@
 
 #include "BallPawn.h"
 #include "RollingBallGameMode.h"
+#include "UI/RollingBallHUD.h"
 #include "Components/StaticMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"

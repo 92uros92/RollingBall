@@ -26,8 +26,8 @@ void UScreenWidget::InitializeWidget(ARollingBallGameMode* RunGameMode)
 	}
 }
 
-void UScreenWidget::SetCoinsCount(const int32 Count)
+void UScreenWidget::SetCoinsCount(const int32 Value)
 {
-	CoinsCount->SetText(FText::AsNumber(Count));
+	CoinsCount->SetText(FText::AsNumber(Value));
 }
 

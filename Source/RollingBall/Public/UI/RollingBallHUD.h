@@ -19,16 +19,25 @@ public:
 	UPROPERTY()
 	class UScreenWidget* OverlayWidget;
 
+	UPROPERTY(EditAnywhere, Category = "Widgets")
+	TSubclassOf<class UUserWidget> ScreenWidgetClass;
+
 	// ******** FUNCTIONS ******** //
 
-	void InitializeOverlay(class ARollingBallGameMode* RunGameMode);
+	ARollingBallHUD();
 
-protected:
+	virtual void DrawHUD() override;
 
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void SetCoinsCount(const int32 Value);
+
+	UFUNCTION(BlueprintCallable)
+	void InitializeWidget(class ARollingBallGameMode* RunGameMode);
+
+
 private:
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UScreenWidget> OverlayWidgetClass;
+	class UScreenWidget* ScreenWidget;
 };
