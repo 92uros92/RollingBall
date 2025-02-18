@@ -11,6 +11,10 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinsCountChanged, int32, CoinsCount);
 
 
+class UUserWidget;
+class UScreenWidget;
+class ARollingBallHUD;
+
 
 UCLASS()
 class ROLLINGBALL_API ARollingBallGameMode : public AGameModeBase
@@ -19,17 +23,29 @@ class ROLLINGBALL_API ARollingBallGameMode : public AGameModeBase
 	
 public:
 
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TSubclassOf<UUserWidget> EndWidgetClass;
+
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnCoinsCountChanged OnCoinsCountChanged;
 
 	UPROPERTY(VisibleAnywhere, Category = "Sccore")
 	int32 TotalCoins;
 
+	UPROPERTY(VisibleAnywhere, Category = "Sccore")
+	int32 MaxCoins;
+
+	UPROPERTY(BlueprintReadWRite, EditAnywhere, Category = "ActorsToFind")
+	TSubclassOf<AActor> BlueprintClassToFind;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ActorsToFind")
+	TArray<AActor*> ActorsToFind;
+
 	UPROPERTY(VisibleInstanceOnly, Category = "Widget")
-	class UScreenWidget* ScreenWidget;
+	UScreenWidget* ScreenWidget;
 
 	UPROPERTY(VisibleInstanceOnly)
-	class ARollingBallHUD* RollingBallHUD;
+	ARollingBallHUD* RollingBallHUD;
 
 	// ******** FUNCTIONS ******** //
 
@@ -37,6 +53,11 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CountCoin();
+
+	void SetMaxSccore();
+
+	UFUNCTION(BlueprintCallable)
+	void GameOver();
 
 protected:
 

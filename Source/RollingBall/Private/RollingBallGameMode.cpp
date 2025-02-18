@@ -5,6 +5,7 @@
 #include "BallPawn.h"
 #include "UI/ScreenWidget.h"
 #include "UI/RollingBallHUD.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -18,6 +19,8 @@ void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Find all Blueprint Actors of specific class
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
 }
 
 void ARollingBallGameMode::CountCoin()
@@ -32,6 +35,29 @@ void ARollingBallGameMode::CountCoin()
 		OnCoinsCountChanged.Broadcast(TotalCoins);
 
 		RollingBallHUD->SetCoinsCount(TotalCoins);
+
+		// If pick up all coins then call win widget
+		if (TotalCoins == ActorsToFind.Num())
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("You Won!!"));
+			GameOver();
+		}
 	}
 }
 
+void ARollingBallGameMode::SetMaxSccore()
+{
+}
+
+void ARollingBallGameMode::GameOver()
+{
+	if (IsValid(EndWidgetClass))
+	{
+		UUserWidget* Widget = CreateWidget(GetWorld(), EndWidgetClass);
+
+		if (Widget)
+		{
+			Widget->AddToViewport();
+		}
+	}
+}

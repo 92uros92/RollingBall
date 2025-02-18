@@ -53,7 +53,7 @@ void ACoinPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent,	AAct
 		}
 
 		BallPawn->CountCoin();
-		UE_LOG(LogTemp, Warning, TEXT("Coin has been pick up."));
+		//UE_LOG(LogTemp, Warning, TEXT("Coin has been pick up."));
 
 		Destroy();
 	}

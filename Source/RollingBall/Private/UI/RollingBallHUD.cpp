@@ -28,7 +28,7 @@ void ARollingBallHUD::BeginPlay()
 	{
 		ScreenWidget = CreateWidget<UScreenWidget>(GetWorld(), ScreenWidgetClass);
 
-		if (ScreenWidget)
+		if (IsValid(ScreenWidget))
 		{
 			ScreenWidget->AddToViewport();
 		}
