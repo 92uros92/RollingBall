@@ -19,8 +19,14 @@ void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Find all Blueprint Actors of specific class
+	ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
+	check(ScreenWidget);
+
+	ScreenWidget->InitializeWidget(this);
+
+	//** Find all Blueprint Actors of specific class **//
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
+	MaxCoins = ActorsToFind.Num();
 }
 
 void ARollingBallGameMode::CountCoin()
@@ -36,17 +42,13 @@ void ARollingBallGameMode::CountCoin()
 
 		RollingBallHUD->SetCoinsCount(TotalCoins);
 
-		// If pick up all coins then call win widget
-		if (TotalCoins == ActorsToFind.Num())
+		//** If pick up all coins then call win widget **//
+		if (TotalCoins == MaxCoins)
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("You Won!!"));
 			GameOver();
 		}
 	}
-}
-
-void ARollingBallGameMode::SetMaxSccore()
-{
 }
 
 void ARollingBallGameMode::GameOver()

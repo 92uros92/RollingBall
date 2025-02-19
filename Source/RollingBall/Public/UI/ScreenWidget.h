@@ -25,7 +25,7 @@ public:
 protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* CoinsCount;
+	class UTextBlock* CurrentCount;
 
 	// ******** FUNCTIONS ******** //
 

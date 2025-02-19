@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Components")
 	TSubclassOf<UUserWidget> EndWidgetClass;
 
+	UPROPERTY(EditAnywhere, Category = "Components")
+	TSubclassOf<UUserWidget> ScreenWidgetClass;
+
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnCoinsCountChanged OnCoinsCountChanged;
 
@@ -53,8 +56,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CountCoin();
-
-	void SetMaxSccore();
 
 	UFUNCTION(BlueprintCallable)
 	void GameOver();

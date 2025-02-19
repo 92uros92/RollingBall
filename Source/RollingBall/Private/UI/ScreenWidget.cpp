@@ -3,6 +3,7 @@
 
 #include "UI/ScreenWidget.h"
 #include "RollingBallGameMode.h"
+#include "UI/RollingBallHUD.h"
 #include "Components/TextBlock.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Blueprint/UserWidget.h"
@@ -20,7 +21,7 @@ void UScreenWidget::InitializeWidget(ARollingBallGameMode* RunGameMode)
 {
 	if (RunGameMode)
 	{
-		CoinsCount->SetText(FText::AsNumber(0));
+		CurrentCount->SetText(FText::AsNumber(0));
 
 		RunGameMode->OnCoinsCountChanged.AddDynamic(this, &UScreenWidget::SetCoinsCount);
 	}
@@ -28,6 +29,6 @@ void UScreenWidget::InitializeWidget(ARollingBallGameMode* RunGameMode)
 
 void UScreenWidget::SetCoinsCount(const int32 Value)
 {
-	CoinsCount->SetText(FText::AsNumber(Value));
+	CurrentCount->SetText(FText::AsNumber(Value));
 }
 
