@@ -27,6 +27,7 @@ public:
 	UPROPERTY()
 	bool bIsTeleporting;
 
+	// ******** FUNCTIONS ******** //
 
 	ATeleportBox();
 
