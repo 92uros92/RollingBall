@@ -47,6 +47,8 @@ void ARollingBallGameMode::CountCoin()
 		//** If pick up all coins then call win widget **//
 		if (TotalCoins == MaxCoins)
 		{
+			// Spawn class... how?
+
 			SpawnEndGate = Cast<ASpawnEndGate>(ASpawnEndGate::StaticClass());
 
 			if (SpawnEndGate)

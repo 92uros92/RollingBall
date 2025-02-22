@@ -27,6 +27,10 @@ void ASpawnEndGate::Tick(float DeltaTime)
 
 void ASpawnEndGate::SpawnActor()
 {
-	AOpenEndGate* OpenEndGate = GetWorld()->SpawnActor<AOpenEndGate>(OpenEndGateClass, RootComponent->GetComponentLocation(), RootComponent->GetComponentRotation());
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+	SpawnParams.Owner = this;  // Set this Spawner as the owner
+
+	AOpenEndGate* OpenEndGate = GetWorld()->SpawnActor<AOpenEndGate>(OpenEndGateClass, RootComponent->GetComponentLocation(), RootComponent->GetComponentRotation(), SpawnParams);
 }
 
