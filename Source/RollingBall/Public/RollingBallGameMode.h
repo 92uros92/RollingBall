@@ -14,6 +14,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinsCountChanged, int32, CoinsCo
 class UUserWidget;
 class UScreenWidget;
 class ARollingBallHUD;
+class AOpenEndGate;
+class ASpawnEndGate;
 
 
 UCLASS()
@@ -32,6 +34,12 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnCoinsCountChanged OnCoinsCountChanged;
 
+	/*UPROPERTY(EditAnywhere, Category = "SpawnActor")
+	TSubclassOf<AOpenEndGate> OpenEndGateClass;*/
+
+	UPROPERTY(VisibleInstanceOnly, Category = "SpawnActor")
+	ASpawnEndGate* SpawnEndGate;
+
 	UPROPERTY(VisibleAnywhere, Category = "Sccore")
 	int32 TotalCoins;
 
@@ -47,7 +55,7 @@ public:
 	UPROPERTY(VisibleInstanceOnly, Category = "Widget")
 	UScreenWidget* ScreenWidget;
 
-	UPROPERTY(VisibleInstanceOnly)
+	UPROPERTY(VisibleInstanceOnly, Category = "Widget")
 	ARollingBallHUD* RollingBallHUD;
 
 	// ******** FUNCTIONS ******** //
@@ -59,6 +67,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void GameOver();
+
+	/*void SpawnEndGate();*/
 
 protected:
 

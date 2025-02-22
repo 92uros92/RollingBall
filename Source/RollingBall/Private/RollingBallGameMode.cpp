@@ -4,6 +4,7 @@
 #include "RollingBallGameMode.h"
 #include "BallPawn.h"
 #include "OpenEndGate.h"
+#include "SpawnEndGate.h"
 #include "UI/ScreenWidget.h"
 #include "UI/RollingBallHUD.h"
 #include "Kismet/GameplayStatics.h"
@@ -46,7 +47,14 @@ void ARollingBallGameMode::CountCoin()
 		//** If pick up all coins then call win widget **//
 		if (TotalCoins == MaxCoins)
 		{
+			SpawnEndGate = Cast<ASpawnEndGate>(ASpawnEndGate::StaticClass());
 
+			if (SpawnEndGate)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Spawn EndGate."));
+				SpawnEndGate->SpawnActor();
+			}
+			//SpawnEndGate();
 
 
 			UE_LOG(LogTemp, Warning, TEXT("You Won!!"));
@@ -67,3 +75,8 @@ void ARollingBallGameMode::GameOver()
 		}
 	}
 }
+
+//void ARollingBallGameMode::SpawnEndGate()
+//{
+//	AOpenEndGate* OpenEndGate = GetWorld()->SpawnActor<AOpenEndGate>(OpenEndGateClass, RootComponent->GetComponentLocation(), RootComponent->GetComponentRotation());
+//}
