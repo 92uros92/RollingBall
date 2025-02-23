@@ -68,7 +68,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GameOver();
 
-	/*void SpawnEndGate();*/
+	void TriggerEndGate();
 
 protected:
 

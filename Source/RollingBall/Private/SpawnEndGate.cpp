@@ -27,10 +27,28 @@ void ASpawnEndGate::Tick(float DeltaTime)
 
 void ASpawnEndGate::SpawnActor()
 {
+	if (!OpenEndGateClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OpenEndGateClass is not set in BP_SpawnEndGate."));
+		return;
+	}
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	SpawnParams.Owner = this;  // Set this Spawner as the owner
 
-	AOpenEndGate* OpenEndGate = GetWorld()->SpawnActor<AOpenEndGate>(OpenEndGateClass, RootComponent->GetComponentLocation(), RootComponent->GetComponentRotation(), SpawnParams);
+	FVector SpawnLocation = GetActorLocation();
+	FRotator SpawnRotation = FRotator::ZeroRotator;
+
+	AOpenEndGate* OpenEndGate = GetWorld()->SpawnActor<AOpenEndGate>(OpenEndGateClass, SpawnLocation, SpawnRotation, SpawnParams);
+
+	if (OpenEndGate)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Spawned Actor: %s"), *OpenEndGate->GetName());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to spawn actor."));
+	}
 }
 

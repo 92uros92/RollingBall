@@ -15,6 +15,7 @@
 ARollingBallGameMode::ARollingBallGameMode()
 {
 	TotalCoins = 0;
+
 }
 
 void ARollingBallGameMode::BeginPlay()
@@ -47,20 +48,7 @@ void ARollingBallGameMode::CountCoin()
 		//** If pick up all coins then call win widget **//
 		if (TotalCoins == MaxCoins)
 		{
-			// Spawn class... how?
-
-			SpawnEndGate = Cast<ASpawnEndGate>(ASpawnEndGate::StaticClass());
-
-			if (SpawnEndGate)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Spawn EndGate."));
-				SpawnEndGate->SpawnActor();
-			}
-			//SpawnEndGate();
-
-
-			UE_LOG(LogTemp, Warning, TEXT("You Won!!"));
-			//GameOver();
+			TriggerEndGate();
 		}
 	}
 }
@@ -78,7 +66,30 @@ void ARollingBallGameMode::GameOver()
 	}
 }
 
-//void ARollingBallGameMode::SpawnEndGate()
-//{
-//	AOpenEndGate* OpenEndGate = GetWorld()->SpawnActor<AOpenEndGate>(OpenEndGateClass, RootComponent->GetComponentLocation(), RootComponent->GetComponentRotation());
-//}
+void ARollingBallGameMode::TriggerEndGate()
+{
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	// Find all actors of class ASpawnEndGate
+	TArray<AActor*> FoundSpawners;
+	UGameplayStatics::GetAllActorsOfClass(World, ASpawnEndGate::StaticClass(), FoundSpawners);
+
+	if (FoundSpawners.Num() == 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("No SpawnEndGate actor found in the world."));
+		return;
+	}
+
+	// Call the spawn function on the first found spawner
+	SpawnEndGate = Cast<ASpawnEndGate>(FoundSpawners[0]);
+	if (SpawnEndGate)
+	{
+		SpawnEndGate->SpawnActor();
+		UE_LOG(LogTemp, Warning, TEXT("Triggered SpawnEndGate actor."));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to cast FoundSpawners to SpawnEndGate."));
+	}
+}
