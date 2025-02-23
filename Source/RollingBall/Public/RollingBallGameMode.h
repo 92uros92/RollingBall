@@ -9,6 +9,7 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinsCountChanged, int32, CoinsCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxCoinsCountChanged, int32, MaxCoinsCount);
 
 
 class UUserWidget;
@@ -33,6 +34,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnCoinsCountChanged OnCoinsCountChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
+	FOnMaxCoinsCountChanged OnMaxCoinsCountChanged;
 
 	/*UPROPERTY(EditAnywhere, Category = "SpawnActor")
 	TSubclassOf<AOpenEndGate> OpenEndGateClass;*/

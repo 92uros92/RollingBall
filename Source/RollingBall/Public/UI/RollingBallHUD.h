@@ -33,6 +33,9 @@ public:
 	UFUNCTION()
 	void SetCoinsCount(const int32 Value);
 
+	UFUNCTION()
+	void SetMaxCoins(const int32 Value);
+
 	UFUNCTION(BlueprintCallable)
 	void InitializeWidget(class ARollingBallGameMode* RunGameMode);
 

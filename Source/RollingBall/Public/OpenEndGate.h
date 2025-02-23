@@ -10,6 +10,7 @@
 
 class UBoxComponent;
 class UParticleSystemComponent;
+class ARollingBallGameMode;
 
 
 UCLASS()
@@ -17,7 +18,12 @@ class ROLLINGBALL_API AOpenEndGate : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+
+	UPROPERTY(VisibleInstanceOnly)
+	ARollingBallGameMode* RollingBallGM;
+
+	// ******** FUNCTIONS ******** //
 
 	AOpenEndGate();
 

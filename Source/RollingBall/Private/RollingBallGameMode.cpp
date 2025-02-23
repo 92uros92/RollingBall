@@ -15,21 +15,30 @@
 ARollingBallGameMode::ARollingBallGameMode()
 {
 	TotalCoins = 0;
-
+	MaxCoins = 0;
 }
 
 void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
-	check(ScreenWidget);
+	RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 
-	ScreenWidget->InitializeWidget(this);
+	if (RollingBallHUD)
+	{
+		ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
+		check(ScreenWidget);
 
-	//** Find all Blueprint Actors of specific class **//
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
-	MaxCoins = ActorsToFind.Num();
+		ScreenWidget->InitializeWidget(this);
+
+		//** Find all Blueprint Actors of specific class **//
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
+		MaxCoins = ActorsToFind.Num();
+
+		OnMaxCoinsCountChanged.Broadcast(MaxCoins);
+	
+		RollingBallHUD->SetMaxCoins(MaxCoins);
+	}
 }
 
 void ARollingBallGameMode::CountCoin()
@@ -45,7 +54,7 @@ void ARollingBallGameMode::CountCoin()
 
 		RollingBallHUD->SetCoinsCount(TotalCoins);
 
-		//** If pick up all coins then call win widget **//
+		//** If pick up all coins then spawn EndGate actor. **//
 		if (TotalCoins == MaxCoins)
 		{
 			TriggerEndGate();

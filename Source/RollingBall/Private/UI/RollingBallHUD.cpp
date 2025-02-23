@@ -43,6 +43,14 @@ void ARollingBallHUD::SetCoinsCount(const int32 Value)
 	}
 }
 
+void ARollingBallHUD::SetMaxCoins(const int32 Value)
+{
+	if (ScreenWidget)
+	{
+		ScreenWidget->SetMaxCoins(Value);
+	}
+}
+
 void ARollingBallHUD::InitializeWidget(ARollingBallGameMode* RunGameMode)
 {
 	if (ScreenWidget)

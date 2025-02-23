@@ -2,8 +2,10 @@
 
 
 #include "OpenEndGate.h"
+#include "RollingBallGameMode.h"
 #include "Components/BoxComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -37,6 +39,13 @@ void AOpenEndGate::OnTriggerBoxEnter(AActor* OverlappActor, AActor* OtherActor)
 {
 	if (OtherActor && OtherActor != this)
 	{
+		RollingBallGM = Cast<ARollingBallGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+		if (RollingBallGM)
+		{
+			RollingBallGM->GameOver();
+		}
+
 		UE_LOG(LogTemp, Warning, TEXT("Level finished!"));
 	}
 }
