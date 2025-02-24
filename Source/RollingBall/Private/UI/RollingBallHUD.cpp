@@ -10,7 +10,7 @@
 
 ARollingBallHUD::ARollingBallHUD()
 {
-
+	
 }
 
 void ARollingBallHUD::DrawHUD()
@@ -24,15 +24,15 @@ void ARollingBallHUD::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (ScreenWidgetClass)
-	{
-		ScreenWidget = CreateWidget<UScreenWidget>(GetWorld(), ScreenWidgetClass);
+	//if (ScreenWidgetClass)
+	//{
+	//	ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
 
-		if (IsValid(ScreenWidget))
-		{
-			ScreenWidget->AddToViewport();
-		}
-	}
+	//	if (IsValid(ScreenWidget))
+	//	{
+	//		ScreenWidget->AddToViewport();
+	//	}
+	//}
 }
 
 void ARollingBallHUD::SetCoinsCount(const int32 Value)

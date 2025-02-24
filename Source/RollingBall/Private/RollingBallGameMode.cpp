@@ -15,44 +15,51 @@
 ARollingBallGameMode::ARollingBallGameMode()
 {
 	TotalCoins = 0;
-	MaxCoins = 0;
 }
 
 void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	//** Find all Blueprint Actors of specific class **//
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
+	MaxCoins = ActorsToFind.Num();
 
-	if (RollingBallHUD)
-	{
-		ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
-		check(ScreenWidget);
+	//RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 
-		ScreenWidget->InitializeWidget(this);
+	//if (RollingBallHUD)
+	//{
+		if (ScreenWidgetClass)
+		{
+			ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
 
-		//** Find all Blueprint Actors of specific class **//
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
-		MaxCoins = ActorsToFind.Num();
+			if (IsValid(ScreenWidget))
+			{
+				ScreenWidget->InitializeWidget(this);
+
+				ScreenWidget->AddToViewport();
+			}
+		}
+		
 
 		OnMaxCoinsCountChanged.Broadcast(MaxCoins);
 	
-		RollingBallHUD->SetMaxCoins(MaxCoins);
-	}
+		ScreenWidget->SetMaxCoins(MaxCoins);
+	//}
 }
 
 void ARollingBallGameMode::CountCoin()
 {
-	RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	//RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 
-	if (RollingBallHUD)
+	if (ScreenWidget)
 	{
 		TotalCoins += 1;
 		//UE_LOG(LogTemp, Warning, TEXT("Total Coins: %d"), TotalCoins);
 
 		OnCoinsCountChanged.Broadcast(TotalCoins);
 
-		RollingBallHUD->SetCoinsCount(TotalCoins);
+		ScreenWidget->SetCoinsCount(TotalCoins);
 
 		//** If pick up all coins then spawn EndGate actor. **//
 		if (TotalCoins == MaxCoins)

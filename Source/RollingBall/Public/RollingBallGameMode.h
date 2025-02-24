@@ -38,9 +38,6 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnMaxCoinsCountChanged OnMaxCoinsCountChanged;
 
-	/*UPROPERTY(EditAnywhere, Category = "SpawnActor")
-	TSubclassOf<AOpenEndGate> OpenEndGateClass;*/
-
 	UPROPERTY(VisibleInstanceOnly, Category = "SpawnActor")
 	ASpawnEndGate* SpawnEndGate;
 
