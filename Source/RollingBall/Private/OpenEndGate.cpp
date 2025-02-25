@@ -3,9 +3,13 @@
 
 #include "OpenEndGate.h"
 #include "RollingBallGameMode.h"
+#include "BallPawn.h"
 #include "Components/BoxComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/Controller.h"
+
 
 
 
@@ -44,6 +48,18 @@ void AOpenEndGate::OnTriggerBoxEnter(AActor* OverlappActor, AActor* OtherActor)
 		if (RollingBallGM)
 		{
 			RollingBallGM->GameOver();
+		}
+
+		APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+		if (PlayerController)
+		{
+			BallPawn = PlayerController->GetPawn();
+
+			if (BallPawn)
+			{
+				BallPawn->DisableInput(PlayerController);
+				BallPawn->Destroy();
+			}
 		}
 
 		UE_LOG(LogTemp, Warning, TEXT("Level finished!"));

@@ -11,6 +11,7 @@
 class UBoxComponent;
 class UParticleSystemComponent;
 class ARollingBallGameMode;
+class APawn;
 
 
 UCLASS()
@@ -22,6 +23,9 @@ public:
 
 	UPROPERTY(VisibleInstanceOnly)
 	ARollingBallGameMode* RollingBallGM;
+
+	UPROPERTY(VisibleInstanceOnly, Category = "Pawn")
+	APawn* BallPawn;
 
 	// ******** FUNCTIONS ******** //
 
