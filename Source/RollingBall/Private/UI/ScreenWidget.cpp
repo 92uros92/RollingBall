@@ -14,7 +14,11 @@
 
 void UScreenWidget::NativeConstruct()
 {
-
+	//*
+	//*
+	//*	WBP_MenuWidget
+	//*
+	//*
 }
 
 void UScreenWidget::InitializeWidget(ARollingBallGameMode* RunGameMode)
