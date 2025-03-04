@@ -21,8 +21,6 @@ void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = true;
-
 	//** Find all Blueprint Actors of specific class **//
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
 	MaxCoins = ActorsToFind.Num();

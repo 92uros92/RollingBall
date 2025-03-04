@@ -9,6 +9,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "GameFramework/PlayerController.h"
 #include "Components/PrimitiveComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -59,6 +60,17 @@ void ABallPawn::BeginPlay()
 			Subsystem->AddMappingContext(BPMappingContext, 0);
 		}
 	}
+
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = true;
+	FInputModeGameAndUI InputData;
+	InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	InputData.SetHideCursorDuringCapture(false);
+	
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController)
+	{
+		PlayerController->SetInputMode(InputData);
+	}
 }
 
 void ABallPawn::Tick(float DeltaTime)
@@ -95,6 +107,9 @@ void ABallPawn::MouseMovement(const FInputActionValue& Value)
 	SpringArm->AddLocalRotation(FRotator(MovementVector.Y, MovementVector.X, 0));
 	FRotator SpringArmRotation = SpringArm->GetRelativeRotation();
 	SpringArm->SetRelativeRotation(FRotator(SpringArmRotation.Pitch, SpringArmRotation.Yaw, 0));
+
+	//UPawnMovementComponent PawnMovement;
+	//PawnMovement
 }
 
 void ABallPawn::CountCoin()
