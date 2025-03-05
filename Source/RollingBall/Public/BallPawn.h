@@ -45,6 +45,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* MouseAction;
 
+	//UPROPERTY(EditAnywhere, Category = "Rotation")
+	//float RotationSpeed;
+
 	// ******** FUNCTIONS ******** //
 
 	virtual void BeginPlay() override;

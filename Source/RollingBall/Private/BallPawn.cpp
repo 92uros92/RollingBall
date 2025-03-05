@@ -46,6 +46,8 @@ ABallPawn::ABallPawn()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	//RotationSpeed = 10.0f;
 }
 
 void ABallPawn::BeginPlay()
@@ -61,14 +63,17 @@ void ABallPawn::BeginPlay()
 		}
 	}
 
-	UGameplayStatics::GetPlayerController(GetWorld(), 0)->bShowMouseCursor = true;
-	FInputModeGameAndUI InputData;
-	InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	InputData.SetHideCursorDuringCapture(false);
-	
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	
 	if (PlayerController)
 	{
+		PlayerController->bShowMouseCursor = true;
+		PlayerController->bEnableMouseOverEvents = true;
+
+		FInputModeGameAndUI InputData;
+		InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputData.SetHideCursorDuringCapture(false);
+
 		PlayerController->SetInputMode(InputData);
 	}
 }
@@ -103,13 +108,13 @@ void ABallPawn::MovePawn(const FInputActionValue& Value)
 void ABallPawn::MouseMovement(const FInputActionValue& Value)
 {
 	FVector2D MovementVector = Value.Get<FVector2D>();
-
+	
 	SpringArm->AddLocalRotation(FRotator(MovementVector.Y, MovementVector.X, 0));
 	FRotator SpringArmRotation = SpringArm->GetRelativeRotation();
 	SpringArm->SetRelativeRotation(FRotator(SpringArmRotation.Pitch, SpringArmRotation.Yaw, 0));
 
-	//UPawnMovementComponent PawnMovement;
-	//PawnMovement
+	//AddControllerYawInput(MovementVector * RotationSpeed * GetWorld()->GetDeltaSeconds());
+	//AddControllerPitchInput(MovementVector * RotationSpeed * GetWorld()->GetDeltaSeconds());
 }
 
 void ABallPawn::CountCoin()
