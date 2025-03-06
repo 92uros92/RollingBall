@@ -82,6 +82,17 @@ void ABallPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+	//
+	//
+	//
+	//	1.) Create "Are you sure" widget
+	//	2.) Measure your time
+	//	3.) Add more levels
+	//
+	//
+	//
+
 }
 
 void ABallPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
