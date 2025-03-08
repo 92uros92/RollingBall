@@ -88,6 +88,7 @@ void ABallPawn::Tick(float DeltaTime)
 	//
 	//	1.) Create duplicate of WBP_LevelsWidget
 	//		- Add MAIN MENU text; button MainMenu
+	//		- Make sure all buttons work correctly
 	//	2.) Measure your time
 	//	3.) Add more levels
 	//
