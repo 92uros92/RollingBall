@@ -89,6 +89,7 @@ void ABallPawn::Tick(float DeltaTime)
 	//	2.) Measure your time
 	//	3.) Add more levels
 	//	4.) Change image for levels
+	//	5.) When EndDoor open, make focus camera
 	//
 	//
 	//
