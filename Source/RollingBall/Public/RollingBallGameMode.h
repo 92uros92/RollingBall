@@ -71,6 +71,10 @@ public:
 
 	void TriggerEndGate();
 
+	void GoToEndCamera();
+
+	void GoToPlayerCamera();
+
 protected:
 
 	virtual void BeginPlay() override;

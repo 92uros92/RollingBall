@@ -7,6 +7,7 @@
 #include "SpawnEndGate.h"
 #include "UI/ScreenWidget.h"
 #include "UI/RollingBallHUD.h"
+#include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -24,34 +25,27 @@ void ARollingBallGameMode::BeginPlay()
 	//** Find all Blueprint Actors of specific class **//
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
 	MaxCoins = ActorsToFind.Num();
+	
+	if (ScreenWidgetClass)
+	{
+		ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
 
-	//RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-
-	//if (RollingBallHUD)
-	//{
-		if (ScreenWidgetClass)
+		if (IsValid(ScreenWidget))
 		{
-			ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
+			ScreenWidget->InitializeWidget(this);
 
-			if (IsValid(ScreenWidget))
-			{
-				ScreenWidget->InitializeWidget(this);
-
-				ScreenWidget->AddToViewport();
-			}
+			ScreenWidget->AddToViewport();
 		}
+	}
 		
 
-		OnMaxCoinsCountChanged.Broadcast(MaxCoins);
+	OnMaxCoinsCountChanged.Broadcast(MaxCoins);
 	
-		ScreenWidget->SetMaxCoins(MaxCoins);
-	//}
+	ScreenWidget->SetMaxCoins(MaxCoins);
 }
 
 void ARollingBallGameMode::CountCoin()
 {
-	//RollingBallHUD = Cast<ARollingBallHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-
 	if (ScreenWidget)
 	{
 		TotalCoins += 1;
@@ -65,6 +59,9 @@ void ARollingBallGameMode::CountCoin()
 		if (TotalCoins == MaxCoins)
 		{
 			TriggerEndGate();
+			GoToEndCamera();
+			FTimerHandle MemberTimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &ARollingBallGameMode::GoToPlayerCamera, 5.0f, false);
 		}
 	}
 }
@@ -87,7 +84,7 @@ void ARollingBallGameMode::TriggerEndGate()
 	UWorld* World = GetWorld();
 	if (!World) return;
 
-	// Find all actors of class ASpawnEndGate
+	//** Find all actors of class ASpawnEndGate. **//
 	TArray<AActor*> FoundSpawners;
 	UGameplayStatics::GetAllActorsOfClass(World, ASpawnEndGate::StaticClass(), FoundSpawners);
 
@@ -97,7 +94,7 @@ void ARollingBallGameMode::TriggerEndGate()
 		return;
 	}
 
-	// Call the spawn function on the first found spawner
+	//** Call the spawn function on the first found spawner. **//
 	SpawnEndGate = Cast<ASpawnEndGate>(FoundSpawners[0]);
 	if (SpawnEndGate)
 	{
@@ -108,4 +105,25 @@ void ARollingBallGameMode::TriggerEndGate()
 	{
 		UE_LOG(LogTemp, Error, TEXT("Failed to cast FoundSpawners to SpawnEndGate."));
 	}
+}
+
+void ARollingBallGameMode::GoToEndCamera()
+{
+	//Find the actor that handles control for the local player.
+	APlayerController* MyPlayerController = UGameplayStatics::GetPlayerController(this, 0);
+
+	//** Find all actors of class ASpawnEndGate. **//
+	TArray<AActor*> FocusCamera;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("EndCamera"), FocusCamera);
+
+	MyPlayerController->SetViewTargetWithBlend(FocusCamera[0], 2.0f);
+}
+
+void ARollingBallGameMode::GoToPlayerCamera()
+{
+	//Find the actor that handles control for the local player.
+	APlayerController* MyPlayerController = UGameplayStatics::GetPlayerController(this, 0);
+
+
+	MyPlayerController->SetViewTargetWithBlend(MyPlayerController->GetPawn(), 2.0f);
 }
