@@ -29,7 +29,8 @@ void ARollingBallGameMode::BeginPlay()
 	if (ScreenWidgetClass)
 	{
 		ScreenWidget = Cast<UScreenWidget>(CreateWidget(GetWorld(), ScreenWidgetClass));
-
+		
+		//** If the ScreenWidget is valid, initialize it and add it on viewport. **//
 		if (IsValid(ScreenWidget))
 		{
 			ScreenWidget->InitializeWidget(this);
@@ -38,7 +39,6 @@ void ARollingBallGameMode::BeginPlay()
 		}
 	}
 		
-
 	OnMaxCoinsCountChanged.Broadcast(MaxCoins);
 	
 	ScreenWidget->SetMaxCoins(MaxCoins);
@@ -59,9 +59,12 @@ void ARollingBallGameMode::CountCoin()
 		if (TotalCoins == MaxCoins)
 		{
 			TriggerEndGate();
+
 			GoToEndCamera();
+
+			//** After 3 second when call GoToEndCamera() call GoToPlayerCamera **//
 			FTimerHandle MemberTimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &ARollingBallGameMode::GoToPlayerCamera, 5.0f, false);
+			GetWorld()->GetTimerManager().SetTimer(MemberTimerHandle, this, &ARollingBallGameMode::GoToPlayerCamera, 3.0f, false);
 		}
 	}
 }
@@ -109,21 +112,22 @@ void ARollingBallGameMode::TriggerEndGate()
 
 void ARollingBallGameMode::GoToEndCamera()
 {
-	//Find the actor that handles control for the local player.
+	//Find the actor that handles control for the local player. **//
 	APlayerController* MyPlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
-	//** Find all actors of class ASpawnEndGate. **//
+	//** Find all actors with tag EndCamera. **//
 	TArray<AActor*> FocusCamera;
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("EndCamera"), FocusCamera);
 
-	MyPlayerController->SetViewTargetWithBlend(FocusCamera[0], 2.0f);
+	//** Set camera view for the actor whose tag is EndCamera. **//
+	MyPlayerController->SetViewTargetWithBlend(FocusCamera[0], 0.0f);
 }
 
 void ARollingBallGameMode::GoToPlayerCamera()
 {
-	//Find the actor that handles control for the local player.
+	//Find the actor that handles control for the local player. **//
 	APlayerController* MyPlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
-
-	MyPlayerController->SetViewTargetWithBlend(MyPlayerController->GetPawn(), 2.0f);
+	//** Set camera view back to player camera. **//
+	MyPlayerController->SetViewTargetWithBlend(MyPlayerController->GetPawn(), 0.0f);
 }
