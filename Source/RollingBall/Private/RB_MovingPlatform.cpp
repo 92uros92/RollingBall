@@ -21,7 +21,7 @@ ARB_MovingPlatform::ARB_MovingPlatform()
 
 	Movement = CreateDefaultSubobject<UInterpToMovementComponent>(TEXT("Movement Component"));
 
-	// Default parameters
+	// Default parameters. **//
 	Movement->Duration = 15.0f;
 	Movement->bSweep = true;
 	Movement->BehaviourType = EInterpToBehaviourType::PingPong;
@@ -42,11 +42,12 @@ void ARB_MovingPlatform::Tick(float DeltaTime)
 
 void ARB_MovingPlatform::MovePlatform()
 {
-	// Setting up the control points for movement
+	//** Setting up the control points for movement. **//
 	Movement->ControlPoints.Add(FInterpControlPoint(FVector(0.0f, 0.0f, 0.0f), true));
 
 	for (int i = 0; i < ThePath.Num(); i++)
 	{
+		//** Add Control Point relative to Platform position. **//
 		Movement->ControlPoints.Add(FInterpControlPoint(ThePath[i], true));
 	}
 
