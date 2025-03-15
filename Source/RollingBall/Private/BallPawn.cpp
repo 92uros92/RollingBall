@@ -90,6 +90,7 @@ void ABallPawn::Tick(float DeltaTime)
 	//	3.) Add more levels
 	//	4.) Change image for levels
 	//	5.) Make sure level button work
+	//	5.) Add breakable platform
 	//
 	//
 	//
