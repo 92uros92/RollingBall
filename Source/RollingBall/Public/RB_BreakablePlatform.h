@@ -25,7 +25,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* PlatformMesh;
 
-	bool bIsPlatformFractured;
+	//bool bIsPlatformFractured;
 
 	// ******** FUNCTIONS ******** //
 
@@ -35,9 +35,19 @@ public:
 
 protected:
 
+	UPROPERTY()
+	FTimerHandle BreakTimer;
+
+	UPROPERTY()
+	FTimerHandle AppearTimer;
+
+	// ******** FUNCTIONS ******** //
+
 	virtual void BeginPlay() override;
 
-private:	
+private:
+
+	// ******** FUNCTIONS ******** //
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp,
@@ -46,6 +56,12 @@ private:
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnEndOverlap(UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex);
 
 	void BreakPlatform();
 

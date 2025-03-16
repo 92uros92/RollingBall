@@ -2,6 +2,7 @@
 
 
 #include "RB_BreakablePlatform.h"
+#include "BallPawn.h"
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -20,7 +21,6 @@ ARB_BreakablePlatform::ARB_BreakablePlatform()
 	PlatformMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlatformMesh"));
 	PlatformMesh->SetupAttachment(BoxCollider);
 
-	bIsPlatformFractured = false;
 }
 
 void ARB_BreakablePlatform::BeginPlay()
@@ -28,7 +28,7 @@ void ARB_BreakablePlatform::BeginPlay()
 	Super::BeginPlay();
 	
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &ARB_BreakablePlatform::OnOverlapBegin);
-
+	BoxCollider->OnComponentEndOverlap.AddDynamic(this, &ARB_BreakablePlatform::OnEndOverlap);
 }
 
 void ARB_BreakablePlatform::Tick(float DeltaTime)
@@ -39,34 +39,46 @@ void ARB_BreakablePlatform::Tick(float DeltaTime)
 
 void ARB_BreakablePlatform::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && OtherActor != this && !bIsPlatformFractured)
+	ABallPawn* BallPawn = Cast<ABallPawn>(OtherActor);
+
+	if (BallPawn)
 	{
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ARB_BreakablePlatform::BreakPlatform, 2.5f, false);
+		GetWorld()->GetTimerManager().SetTimer(BreakTimer, this, &ARB_BreakablePlatform::BreakPlatform, 2.5f, true);
 
 		UE_LOG(LogTemp, Warning, TEXT("Hurry up!! It will break!!"));
 	}
 
 }
 
+void ARB_BreakablePlatform::OnEndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	ABallPawn* BallPawn = Cast<ABallPawn>(OtherActor);
+
+	if (BallPawn)
+	{
+		GetWorld()->GetTimerManager().SetTimer(AppearTimer, this, &ARB_BreakablePlatform::AppearPlatform, 2.5f, true);
+	}
+}
+
 void ARB_BreakablePlatform::BreakPlatform()
 {
-	if (bIsPlatformFractured) return;
-
-	bIsPlatformFractured = true;
-
 	PlatformMesh->SetVisibility(false);
 	PlatformMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	FTimerHandle AppearHandle;
-	GetWorld()->GetTimerManager().SetTimer(AppearHandle, this, &ARB_BreakablePlatform::AppearPlatform, 2.5f, false);
+	if (BreakTimer.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(BreakTimer);
+	}
 }
 
 void ARB_BreakablePlatform::AppearPlatform()
 {
-	bIsPlatformFractured = false;
-
 	PlatformMesh->SetVisibility(true);
 	PlatformMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	if (AppearTimer.IsValid())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(AppearTimer);
+	}
 }
 

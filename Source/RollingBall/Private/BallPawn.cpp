@@ -88,10 +88,6 @@ void ABallPawn::Tick(float DeltaTime)
 	//	1.) Add sound and particles
 	//	2.) Measure your time
 	//	3.) Add more levels
-	//	4.) Change image for levels
-	//	5.) Make sure level button work
-	//	5.) Add breakable platform
-	//		- done --- disappear and appear again (OnENDOverlap)
 	//
 	//
 	//
