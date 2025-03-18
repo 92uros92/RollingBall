@@ -67,8 +67,9 @@ void ABallPawn::BeginPlay()
 	
 	if (PlayerController)
 	{
-		PlayerController->bShowMouseCursor = true;
-		PlayerController->bEnableMouseOverEvents = true;
+		PlayerController->bShowMouseCursor = false;
+		PlayerController->bEnableMouseOverEvents = false;
+		PlayerController->GetMoveGoalOffset(this);
 
 		FInputModeGameAndUI InputData;
 		InputData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
