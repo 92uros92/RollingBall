@@ -90,6 +90,7 @@ void ABallPawn::Tick(float DeltaTime)
 	//	2.) Measure your time
 	//	3.) Add more levels
 	//	4.) Pawn rotate in only one direction when teleport
+	//	5.) Finish level design
 	//
 	//
 	//
