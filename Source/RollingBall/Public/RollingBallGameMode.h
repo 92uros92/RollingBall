@@ -17,6 +17,7 @@ class UScreenWidget;
 class ARollingBallHUD;
 class AOpenEndGate;
 class ASpawnEndGate;
+class URB_SaveGame;
 
 
 UCLASS()
@@ -59,6 +60,12 @@ public:
 	UPROPERTY(VisibleInstanceOnly, Category = "Widget")
 	ARollingBallHUD* RollingBallHUD;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Time")
+	int32 GameTime;
+
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	URB_SaveGame* SaveGameInstance;
+
 	// ******** FUNCTIONS ******** //
 
 	ARollingBallGameMode();
@@ -74,6 +81,12 @@ public:
 	void GoToEndCamera();
 
 	void GoToPlayerCamera();
+
+	UFUNCTION(BlueprintCallable)
+	void SaveGameTime();
+
+	UFUNCTION(BlueprintCallable)
+	void LoadGameTime();
 
 protected:
 

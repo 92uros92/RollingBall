@@ -5,6 +5,7 @@
 #include "BallPawn.h"
 #include "OpenEndGate.h"
 #include "SpawnEndGate.h"
+#include "RB_SaveGame.h"
 #include "UI/ScreenWidget.h"
 #include "UI/RollingBallHUD.h"
 #include "Camera/CameraComponent.h"
@@ -130,4 +131,37 @@ void ARollingBallGameMode::GoToPlayerCamera()
 
 	//** Set camera view back to player camera. **//
 	MyPlayerController->SetViewTargetWithBlend(MyPlayerController->GetPawn(), 0.0f);
+}
+
+void ARollingBallGameMode::SaveGameTime()
+{
+	SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::CreateSaveGameObject(URB_SaveGame::StaticClass()));
+
+	if (SaveGameInstance)
+	{
+		SaveGameInstance->GameTime = GameTime;
+
+		//OnHighScoreChanged.Broadcast(HighScore);
+
+		UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("GameTimeSlot"), 0);
+	}
+}
+
+void ARollingBallGameMode::LoadGameTime()
+{
+	if (UGameplayStatics::DoesSaveGameExist(TEXT("GameTimeSlot"), 0))
+	{
+		SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
+
+		if (SaveGameInstance)
+		{
+			GameTime = SaveGameInstance->GameTime;
+
+			UE_LOG(LogTemp, Warning, TEXT("GameTime: %i"), GameTime);
+		}
+	}
+	else
+	{
+		GameTime = 0;
+	}
 }
