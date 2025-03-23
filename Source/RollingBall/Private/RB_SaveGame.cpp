@@ -8,5 +8,5 @@
 
 URB_SaveGame::URB_SaveGame()
 {
-	GameTime = 0;
+	GameTime = 0.0f;
 }

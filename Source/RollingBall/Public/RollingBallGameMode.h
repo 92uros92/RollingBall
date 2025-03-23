@@ -10,6 +10,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinsCountChanged, int32, CoinsCount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxCoinsCountChanged, int32, MaxCoinsCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimeChanged, int32, GameTimeCount);
 
 
 class UUserWidget;
@@ -38,6 +39,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnMaxCoinsCountChanged OnMaxCoinsCountChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
+	FOnGameTimeChanged OnGameTimeChanged;
 
 	UPROPERTY(VisibleInstanceOnly, Category = "SpawnActor")
 	ASpawnEndGate* SpawnEndGate;
@@ -87,6 +91,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LoadGameTime();
+
+	UFUNCTION(BlueprintCallable)
+	void GetGameTime();
 
 protected:
 

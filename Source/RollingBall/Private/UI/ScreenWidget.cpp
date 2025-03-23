@@ -25,8 +25,11 @@ void UScreenWidget::InitializeWidget(ARollingBallGameMode* RunGameMode)
 
 		MaxCount->SetText(FText::AsNumber(0));
 
+		GameTimeText->SetText(FText::AsNumber(0));
+
 		RunGameMode->OnCoinsCountChanged.AddDynamic(this, &UScreenWidget::SetCoinsCount);
 		RunGameMode->OnMaxCoinsCountChanged.AddDynamic(this, &UScreenWidget::SetMaxCoins);
+		RunGameMode->OnGameTimeChanged.AddDynamic(this, &UScreenWidget::SetGameTimeText);
 	}
 }
 
@@ -38,5 +41,10 @@ void UScreenWidget::SetCoinsCount(const int32 Value)
 void UScreenWidget::SetMaxCoins(const int32 Value)
 {
 	MaxCount->SetText(FText::AsNumber(Value));
+}
+
+void UScreenWidget::SetGameTimeText(const int32 Value)
+{
+	GameTimeText->SetText(FText::AsNumber(Value));
 }
 

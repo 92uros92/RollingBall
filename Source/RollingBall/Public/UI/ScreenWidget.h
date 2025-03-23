@@ -25,6 +25,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMaxCoins(const int32 Value);
 
+	UFUNCTION(BlueprintCallable)
+	void SetGameTimeText(const int32 Value);
+
 protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
@@ -32,6 +35,9 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	class UTextBlock* MaxCount;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	class UTextBlock* GameTimeText;
 
 	// ******** FUNCTIONS ******** //
 

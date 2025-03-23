@@ -165,3 +165,8 @@ void ARollingBallGameMode::LoadGameTime()
 		GameTime = 0;
 	}
 }
+
+void ARollingBallGameMode::GetGameTime()
+{
+
+}
