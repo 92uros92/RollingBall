@@ -10,7 +10,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinsCountChanged, int32, CoinsCount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxCoinsCountChanged, int32, MaxCoinsCount);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimeChanged, int32, GameTimeCount);
+
 
 
 class UUserWidget;
@@ -40,9 +40,6 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnMaxCoinsCountChanged OnMaxCoinsCountChanged;
 
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
-	FOnGameTimeChanged OnGameTimeChanged;
-
 	UPROPERTY(VisibleInstanceOnly, Category = "SpawnActor")
 	ASpawnEndGate* SpawnEndGate;
 
@@ -64,10 +61,7 @@ public:
 	UPROPERTY(VisibleInstanceOnly, Category = "Widget")
 	ARollingBallHUD* RollingBallHUD;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Time")
-	int32 GameTime;
-
-	UPROPERTY(VisibleAnywhere, Category = "Time")
+	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	URB_SaveGame* SaveGameInstance;
 
 	// ******** FUNCTIONS ******** //
@@ -91,9 +85,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LoadGameTime();
-
-	UFUNCTION(BlueprintCallable)
-	void GetGameTime();
 
 protected:
 

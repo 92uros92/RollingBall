@@ -9,12 +9,32 @@
 
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimeChanged, float, GameTimeCount);
+
+
+class UTextBlock;
+
+
 UCLASS()
 class ROLLINGBALL_API UScreenWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
 public:
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
+	FOnGameTimeChanged OnGameTimeChanged;
+
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	float StartGameTime;
+
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	float EndGameTime;
+
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	float TotalGameTime;
+
+	// ******** FUNCTIONS ******** //
 
 	UFUNCTION(BlueprintCallable)
 	void InitializeWidget(class ARollingBallGameMode* RunGameMode);
@@ -25,21 +45,33 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMaxCoins(const int32 Value);
 
-	UFUNCTION(BlueprintCallable)
-	void SetGameTimeText(const int32 Value);
+	//UFUNCTION(BlueprintCallable)
+	//void SetGameTimeText();
+
+	void EndGame();
+
+	float GetElapsedGameTime() const;
 
 protected:
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* CurrentCount;
+	UTextBlock* CurrentCount;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* MaxCount;
+	UTextBlock* MaxCount;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	class UTextBlock* GameTimeText;
+	UTextBlock* GameTimeText;
+
+	//float GameTime;
+
+	//FTimerHandle GameTimerHandle;
 
 	// ******** FUNCTIONS ******** //
 
+	virtual void NativePreConstruct() override;
+
 	virtual void NativeConstruct() override;
+
+	//virtual void NativeDestruct() override;
 };

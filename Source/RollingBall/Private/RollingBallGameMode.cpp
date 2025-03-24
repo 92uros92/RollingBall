@@ -17,11 +17,13 @@
 ARollingBallGameMode::ARollingBallGameMode()
 {
 	TotalCoins = 0;
+
 }
 
 void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
 
 	//** Find all Blueprint Actors of specific class **//
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
@@ -72,6 +74,10 @@ void ARollingBallGameMode::CountCoin()
 
 void ARollingBallGameMode::GameOver()
 {
+	ScreenWidget->EndGame();
+
+	SaveGameTime();
+
 	if (IsValid(EndWidgetClass))
 	{
 		UUserWidget* Widget = CreateWidget(GetWorld(), EndWidgetClass);
@@ -139,9 +145,9 @@ void ARollingBallGameMode::SaveGameTime()
 
 	if (SaveGameInstance)
 	{
-		SaveGameInstance->GameTime = GameTime;
+		SaveGameInstance->GameTime = ScreenWidget->TotalGameTime;
 
-		//OnHighScoreChanged.Broadcast(HighScore);
+		//OnGameTimeChanged.Broadcast(TotalGameTime);
 
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("GameTimeSlot"), 0);
 	}
@@ -155,18 +161,13 @@ void ARollingBallGameMode::LoadGameTime()
 
 		if (SaveGameInstance)
 		{
-			GameTime = SaveGameInstance->GameTime;
+			ScreenWidget->TotalGameTime = SaveGameInstance->GameTime;
 
-			UE_LOG(LogTemp, Warning, TEXT("GameTime: %i"), GameTime);
+			UE_LOG(LogTemp, Warning, TEXT("GameTime: %i"), ScreenWidget->TotalGameTime);
 		}
 	}
 	else
 	{
-		GameTime = 0;
+		ScreenWidget->TotalGameTime = 0.0f;
 	}
-}
-
-void ARollingBallGameMode::GetGameTime()
-{
-
 }
