@@ -9,9 +9,6 @@
 
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimeChanged, float, GameTimeCount);
-
-
 class UTextBlock;
 
 
@@ -21,18 +18,6 @@ class ROLLINGBALL_API UScreenWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-
-	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
-	FOnGameTimeChanged OnGameTimeChanged;
-
-	UPROPERTY(VisibleAnywhere, Category = "Time")
-	float StartGameTime;
-
-	UPROPERTY(VisibleAnywhere, Category = "Time")
-	float EndGameTime;
-
-	UPROPERTY(VisibleAnywhere, Category = "Time")
-	float TotalGameTime;
 
 	// ******** FUNCTIONS ******** //
 
@@ -45,12 +30,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetMaxCoins(const int32 Value);
 
-	//UFUNCTION(BlueprintCallable)
-	//void SetGameTimeText();
-
-	void EndGame();
-
-	float GetElapsedGameTime() const;
+	UFUNCTION(BlueprintCallable)
+	void SetGameTimeText();
 
 protected:
 
@@ -63,15 +44,13 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* GameTimeText;
 
-	//float GameTime;
+	int32 GameTime;
 
-	//FTimerHandle GameTimerHandle;
+	FTimerHandle GameTimerHandle;
 
 	// ******** FUNCTIONS ******** //
 
-	virtual void NativePreConstruct() override;
-
 	virtual void NativeConstruct() override;
 
-	//virtual void NativeDestruct() override;
+	virtual void NativeDestruct() override;
 };

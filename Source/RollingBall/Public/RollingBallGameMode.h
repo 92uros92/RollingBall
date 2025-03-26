@@ -10,6 +10,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCoinsCountChanged, int32, CoinsCount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxCoinsCountChanged, int32, MaxCoinsCount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimeChanged, int32, GameTimeCount);
 
 
 
@@ -40,6 +41,9 @@ public:
 	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
 	FOnMaxCoinsCountChanged OnMaxCoinsCountChanged;
 
+	UPROPERTY(BlueprintAssignable, BlueprintCallable, Category = "Events")
+	FOnGameTimeChanged OnGameTimeChanged;
+
 	UPROPERTY(VisibleInstanceOnly, Category = "SpawnActor")
 	ASpawnEndGate* SpawnEndGate;
 
@@ -64,9 +68,22 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	URB_SaveGame* SaveGameInstance;
 
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	int32 StartGameTime;
+
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	int32 EndGameTime;
+
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	int32 TotalGameTime;
+
+	bool bGameEnded;
+
 	// ******** FUNCTIONS ******** //
 
 	ARollingBallGameMode();
+
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
 	void CountCoin();
@@ -85,6 +102,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void LoadGameTime();
+
+	void EndGame();
+
+	float GetElapsedGameTime() const;
 
 protected:
 

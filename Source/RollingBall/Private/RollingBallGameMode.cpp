@@ -18,12 +18,31 @@ ARollingBallGameMode::ARollingBallGameMode()
 {
 	TotalCoins = 0;
 
+	StartGameTime = 0;
+	EndGameTime = 0;
+	bGameEnded = false;
+}
+
+void ARollingBallGameMode::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	//** Update elapsed time but only if game is running **//
+	if (!bGameEnded)
+	{
+		int32 ElapsedTime = GetElapsedGameTime();
+		UE_LOG(LogTemp, Log, TEXT("Elapsed Time: %i seconds"), ElapsedTime);
+	}
 }
 
 void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	LoadGameTime();
+
+	//** Store the game time when start **//
+	StartGameTime = GetWorld()->GetTimeSeconds();
 
 	//** Find all Blueprint Actors of specific class **//
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), BlueprintClassToFind, ActorsToFind);
@@ -74,9 +93,14 @@ void ARollingBallGameMode::CountCoin()
 
 void ARollingBallGameMode::GameOver()
 {
-	ScreenWidget->EndGame();
+	EndGame();
 
 	SaveGameTime();
+
+	if (IsValid(ScreenWidget))
+	{
+		ScreenWidget->RemoveFromParent();
+	}
 
 	if (IsValid(EndWidgetClass))
 	{
@@ -139,15 +163,40 @@ void ARollingBallGameMode::GoToPlayerCamera()
 	MyPlayerController->SetViewTargetWithBlend(MyPlayerController->GetPawn(), 0.0f);
 }
 
+
+void ARollingBallGameMode::EndGame()
+{
+	if (!bGameEnded)
+	{
+		bGameEnded = true;
+
+		//** Store the time when the game ends **//
+		EndGameTime = GetWorld()->GetTimeSeconds();
+
+		TotalGameTime = GetElapsedGameTime();
+
+		OnGameTimeChanged.Broadcast(TotalGameTime);
+
+		SaveGameTime();
+
+		UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
+	}
+}
+
+float ARollingBallGameMode::GetElapsedGameTime() const
+{
+	return bGameEnded ? (EndGameTime - StartGameTime) : (GetWorld()->GetTimeSeconds() - StartGameTime);
+}
+
 void ARollingBallGameMode::SaveGameTime()
 {
 	SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::CreateSaveGameObject(URB_SaveGame::StaticClass()));
 
 	if (SaveGameInstance)
 	{
-		SaveGameInstance->GameTime = ScreenWidget->TotalGameTime;
+		SaveGameInstance->GameTime = TotalGameTime;
 
-		//OnGameTimeChanged.Broadcast(TotalGameTime);
+		OnGameTimeChanged.Broadcast(TotalGameTime);
 
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("GameTimeSlot"), 0);
 	}
@@ -161,13 +210,14 @@ void ARollingBallGameMode::LoadGameTime()
 
 		if (SaveGameInstance)
 		{
-			ScreenWidget->TotalGameTime = SaveGameInstance->GameTime;
+			TotalGameTime = SaveGameInstance->GameTime;
 
-			UE_LOG(LogTemp, Warning, TEXT("GameTime: %i"), ScreenWidget->TotalGameTime);
+			UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
 		}
 	}
 	else
 	{
-		ScreenWidget->TotalGameTime = 0.0f;
+		TotalGameTime = 0;
 	}
 }
+

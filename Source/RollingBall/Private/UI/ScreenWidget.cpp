@@ -13,29 +13,21 @@
 
 
 
-void UScreenWidget::NativePreConstruct()
-{
-	Super::NativePreConstruct();
-
-	StartGameTime = 0.0f;
-	EndGameTime = 0.0f;
-}
-
 void UScreenWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	//** Store the game time when start **//
-	StartGameTime = GetWorld()->GetTimeSeconds();
+	//** Start timer to update game time every 1 second **//
+	GetWorld()->GetTimerManager().SetTimer(GameTimerHandle, this, &UScreenWidget::SetGameTimeText, 1.0f, true);
 }
 
-//void UScreenWidget::NativeDestruct()
-//{
-//	Super::NativeDestruct();
-//
-//	//** Clear the timer **//
-//	GetWorld()->GetTimerManager().ClearTimer(GameTimerHandle);
-//}
+void UScreenWidget::NativeDestruct()
+{
+	Super::NativeDestruct();
+
+	//** Clear the timer **//
+	GetWorld()->GetTimerManager().ClearTimer(GameTimerHandle);
+}
 
 void UScreenWidget::InitializeWidget(ARollingBallGameMode* RunGameMode)
 {
@@ -45,12 +37,8 @@ void UScreenWidget::InitializeWidget(ARollingBallGameMode* RunGameMode)
 
 		MaxCount->SetText(FText::AsNumber(0));
 
-		FString TimeString = FString::Printf(TEXT("Time: %.1f s"), StartGameTime);
-		GameTimeText->SetText(FText::FromString(TimeString));
-
 		RunGameMode->OnCoinsCountChanged.AddDynamic(this, &UScreenWidget::SetCoinsCount);
 		RunGameMode->OnMaxCoinsCountChanged.AddDynamic(this, &UScreenWidget::SetMaxCoins);
-		//RunGameMode->OnGameTimeChanged.AddDynamic(this, &UScreenWidget::SetGameTimeText);
 	}
 }
 
@@ -64,32 +52,17 @@ void UScreenWidget::SetMaxCoins(const int32 Value)
 	MaxCount->SetText(FText::AsNumber(Value));
 }
 
-//void UScreenWidget::SetGameTimeText()
-//{
-//
-//	//ElapsedTime = GetWorld()->GetTimeSeconds();
-//	/*ElapsedTime += 1.0f;*/
-//
-//	ARollingBallGameMode* GameMode = Cast<ARollingBallGameMode>(UGameplayStatics::GetGameMode(this));
-//	if (GameMode && GameTimeText)
-//	{
-//		float GameTime = GameMode->GetElapsedGameTime();
-//		GameTimeText->SetText(FText::FromString(FString::Printf(TEXT("Game Time: %.1f s"), GameTime)));
-//	}
-//}
-
-void UScreenWidget::EndGame()
+void UScreenWidget::SetGameTimeText()
 {
-	//** Store the time when the game ends **//
-	EndGameTime = GetWorld()->GetTimeSeconds();
 
-	TotalGameTime = GetElapsedGameTime();
+	//ElapsedTime = GetWorld()->GetTimeSeconds();
+	/*ElapsedTime += 1.0f;*/
 
-	UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %f seconds"), TotalGameTime);
+	ARollingBallGameMode* GameMode = Cast<ARollingBallGameMode>(UGameplayStatics::GetGameMode(this));
+	if (GameMode && GameTimeText)
+	{
+		GameTime = GameMode->GetElapsedGameTime();
+		FString TimeString = FString::Printf(TEXT("Time: %i"), GameTime);
+		GameTimeText->SetText(FText::FromString(TimeString));
+	}
 }
-
-float UScreenWidget::GetElapsedGameTime() const
-{
-	return (EndGameTime > 0.0f) ? (EndGameTime - StartGameTime) : (GetWorld()->GetTimeSeconds() - StartGameTime);
-}
-

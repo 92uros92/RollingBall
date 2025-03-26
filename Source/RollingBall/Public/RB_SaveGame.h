@@ -18,7 +18,7 @@ class ROLLINGBALL_API URB_SaveGame : public USaveGame
 public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Time")
-	float GameTime;
+	int32 GameTime;
 
 	// ******** FUNCTIONS ******** //
 
