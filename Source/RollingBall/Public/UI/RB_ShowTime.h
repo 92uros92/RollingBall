@@ -20,6 +20,10 @@ class ROLLINGBALL_API URB_ShowTime : public UUserWidget
 	
 public:
 
+	int32 TotalSecond;
+	int32 minutes;
+	int32 seconds;
+
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UTextBlock* ShowTimeText;
 
@@ -37,5 +41,9 @@ public:
 protected:
 
 	UPROPERTY(BlueprintReadOnly)
-	URB_SaveGame* RB_SaveGame;
+	URB_SaveGame* SaveGame;
+
+	// ******** FUNCTIONS ******** //
+
+	virtual void NativeConstruct() override;
 };
