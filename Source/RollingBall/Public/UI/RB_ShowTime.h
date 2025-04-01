@@ -32,11 +32,11 @@ public:
 
 	// ******** FUNCTIONS ******** //
 
-	UFUNCTION(BlueprintCallable)
-	void InitializeWidget(ARollingBallGameMode* RunGameMode);
+	//UFUNCTION(BlueprintCallable)
+	//void InitializeWidget(ARollingBallGameMode* RunGameMode);
 
 	UFUNCTION(BlueprintCallable)
-	void SetGameTimeCount(int32 TimeCount);
+	void SetGameTimeCount();
 
 protected:
 
@@ -45,5 +45,5 @@ protected:
 
 	// ******** FUNCTIONS ******** //
 
-	virtual void NativeConstruct() override;
+	//virtual void NativeConstruct() override;
 };

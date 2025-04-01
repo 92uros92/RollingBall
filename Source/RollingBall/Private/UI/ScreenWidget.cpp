@@ -62,7 +62,11 @@ void UScreenWidget::SetGameTimeText()
 	if (GameMode && GameTimeText)
 	{
 		GameTime = GameMode->GetElapsedGameTime();
-		FString TimeString = FString::Printf(TEXT("Time: %i"), GameTime);
+		int32 TotalSecond = GameTime;
+		int32 minutes = TotalSecond / 60;
+		int32 seconds = TotalSecond % 60;
+
+		FString TimeString = FString::Printf(TEXT("Time: %i:%i"), minutes, seconds);
 		GameTimeText->SetText(FText::FromString(TimeString));
 	}
 }
