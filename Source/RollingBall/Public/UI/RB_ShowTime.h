@@ -32,9 +32,6 @@ public:
 
 	// ******** FUNCTIONS ******** //
 
-	//UFUNCTION(BlueprintCallable)
-	//void InitializeWidget(ARollingBallGameMode* RunGameMode);
-
 	UFUNCTION(BlueprintCallable)
 	void SetGameTimeCount();
 
@@ -43,7 +40,4 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	URB_SaveGame* SaveGame;
 
-	// ******** FUNCTIONS ******** //
-
-	//virtual void NativeConstruct() override;
 };

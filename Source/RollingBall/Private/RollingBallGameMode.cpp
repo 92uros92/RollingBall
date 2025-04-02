@@ -173,13 +173,15 @@ void ARollingBallGameMode::EndGame()
 		//** Store the time when the game ends **//
 		EndGameTime = GetWorld()->GetTimeSeconds();
 
+		//** Store total game time **//
 		TotalGameTime = GetElapsedGameTime();
 
+		//** Add TotalGameTime into delegate OnGameTimeChanged **//
 		OnGameTimeChanged.Broadcast(TotalGameTime);
 
 		SaveGameTime();
 
-		UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
+		//UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
 	}
 }
 
@@ -194,9 +196,10 @@ void ARollingBallGameMode::SaveGameTime()
 
 	if (SaveGameInstance)
 	{
+		//** Save total game time into SaveGameInstance class **//
 		SaveGameInstance->GameTime = TotalGameTime;
 
-		OnGameTimeChanged.Broadcast(TotalGameTime);
+		//OnGameTimeChanged.Broadcast(TotalGameTime);
 
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("GameTimeSlot"), 0);
 	}
@@ -212,7 +215,7 @@ void ARollingBallGameMode::LoadGameTime()
 		{
 			TotalGameTime = SaveGameInstance->GameTime;
 
-			UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
+			//UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
 		}
 	}
 	else

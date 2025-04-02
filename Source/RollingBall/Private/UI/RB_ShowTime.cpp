@@ -11,27 +11,6 @@
 
 
 
-//void URB_ShowTime::NativeConstruct()
-//{
-//	if (SaveGame)
-//	{
-//		TotalSecond = SaveGame->GameTime;
-//		//minutes = TotalSecond / 60;
-//		//seconds = TotalSecond % 60;
-//	}
-//}
-
-//void URB_ShowTime::InitializeWidget(ARollingBallGameMode* RunGameMode)
-//{
-//	if (RunGameMode)
-//	{
-//		FString TimeString = FString::Printf(TEXT("%i"), SaveGame->GameTime);
-//		ShowTimeText->SetText(FText::FromString(TimeString));
-//
-//		RunGameMode->OnGameTimeChanged.AddDynamic(this, &URB_ShowTime::SetGameTimeCount);
-//	}
-//}
-
 void URB_ShowTime::SetGameTimeCount()
 {
 	SaveGame = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
