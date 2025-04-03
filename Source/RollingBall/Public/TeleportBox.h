@@ -21,6 +21,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Teleporter")
 	ATeleportBox* OtherTeleporter;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	class USoundBase* TeleportSound;
+
 	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Teleporter")
 	class UArrowComponent* PawnLook;*/
 

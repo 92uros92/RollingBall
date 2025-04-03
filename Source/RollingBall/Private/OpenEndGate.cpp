@@ -57,6 +57,11 @@ void AOpenEndGate::OnTriggerBoxEnter(AActor* OverlappActor, AActor* OtherActor)
 
 			if (BallPawn)
 			{
+				if (EndSound)
+				{
+					UGameplayStatics::PlaySoundAtLocation(GetWorld(), EndSound, GetActorLocation());
+				}
+
 				BallPawn->DisableInput(PlayerController);
 				BallPawn->Destroy();
 			}

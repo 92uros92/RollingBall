@@ -27,6 +27,9 @@ public:
 	UPROPERTY(VisibleInstanceOnly, Category = "Pawn")
 	APawn* BallPawn;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	class USoundBase* EndSound;
+
 	// ******** FUNCTIONS ******** //
 
 	AOpenEndGate();

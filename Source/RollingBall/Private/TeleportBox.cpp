@@ -7,6 +7,7 @@
 #include "GameFramework/Controller.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -36,6 +37,11 @@ void ATeleportBox::OnTeleporterEnter(AActor* OverlappActor, AActor* OtherActor)
 
 			if (MyPawn && !OtherTeleporter->bIsTeleporting)
 			{
+				if (TeleportSound)
+				{
+					UGameplayStatics::PlaySoundAtLocation(GetWorld(), TeleportSound, GetActorLocation());
+				}
+
 				bIsTeleporting = true;
 
 				MyPawn->SetActorRotation(OtherTeleporter->GetActorRotation());
