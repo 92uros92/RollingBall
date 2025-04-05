@@ -79,6 +79,15 @@ public:
 
 	bool bGameEnded;
 
+	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
+	int32 MapTime;
+
+	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
+	TSoftObjectPtr<UWorld> DefaultMap;
+
+	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
+	TMap<TSoftObjectPtr<UWorld>, int32> Maps;
+
 	// ******** FUNCTIONS ******** //
 
 	ARollingBallGameMode();

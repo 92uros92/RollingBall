@@ -39,6 +39,9 @@ void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//** Store the default map in Map **//
+	Maps.Add(DefaultMap, MapTime);
+
 	LoadGameTime();
 
 	//** Store the game time when start **//

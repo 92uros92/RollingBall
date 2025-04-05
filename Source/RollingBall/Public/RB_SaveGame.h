@@ -20,6 +20,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Time")
 	int32 GameTime;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Maps")
+	FString MapName;
+
 	// ******** FUNCTIONS ******** //
 
 	URB_SaveGame();
