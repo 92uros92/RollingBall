@@ -39,9 +39,6 @@ void ARollingBallGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//** Store the default map in Map **//
-	Maps.Add(DefaultMap, MapTime);
-
 	LoadGameTime();
 
 	//** Store the game time when start **//
@@ -182,6 +179,11 @@ void ARollingBallGameMode::EndGame()
 		//** Add TotalGameTime into delegate OnGameTimeChanged **//
 		OnGameTimeChanged.Broadcast(TotalGameTime);
 
+		//** Get map name **//
+		CurrentMap = GetWorld()->GetMapName();
+		//** Clean name **//
+		CurrentMap.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+
 		SaveGameTime();
 
 		//UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
@@ -199,8 +201,26 @@ void ARollingBallGameMode::SaveGameTime()
 
 	if (SaveGameInstance)
 	{
+		// Find or add map time entry
+		FMapTimeData* CurrentEntry = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
+			{
+				return Entry.MapName == CurrentMap;
+			});
+
+		if (CurrentEntry)
+		{
+			CurrentEntry->GameTime += TotalGameTime;
+		}
+		else
+		{
+			FMapTimeData NewEntry;
+			NewEntry.MapName = CurrentMap;
+			NewEntry.GameTime = TotalGameTime;
+			SaveGameInstance->MapTimes.Add(NewEntry);
+		}
+
 		//** Save total game time into SaveGameInstance class **//
-		SaveGameInstance->GameTime = TotalGameTime;
+		//SaveGameInstance->GameTime = TotalGameTime;
 
 		//OnGameTimeChanged.Broadcast(TotalGameTime);
 
@@ -216,7 +236,11 @@ void ARollingBallGameMode::LoadGameTime()
 
 		if (SaveGameInstance)
 		{
-			TotalGameTime = SaveGameInstance->GameTime;
+			for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
+			{
+				// Display Entry.MapName and Entry.TimeSpent --> ADD MAP
+				TotalGameTime = Entry.GameTime;
+			}
 
 			//UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
 		}

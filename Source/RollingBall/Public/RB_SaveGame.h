@@ -9,6 +9,18 @@
 
 
 
+USTRUCT(BlueprintType)
+struct FMapTimeData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MapTime")
+	int32 GameTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MapTime")
+	FString MapName;
+
+};
 
 UCLASS()
 class ROLLINGBALL_API URB_SaveGame : public USaveGame
@@ -17,11 +29,8 @@ class ROLLINGBALL_API URB_SaveGame : public USaveGame
 	
 public:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Time")
-	int32 GameTime;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Maps")
-	FString MapName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MapTime")
+	TArray<FMapTimeData> MapTimes;
 
 	// ******** FUNCTIONS ******** //
 

@@ -13,16 +13,20 @@
 
 void URB_ShowTime::SetGameTimeCount()
 {
-	SaveGame = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
+	SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
 
-	if (SaveGame)
+	if (SaveGameInstance)
 	{
-		TotalSecond = SaveGame->GameTime;
-		minutes = TotalSecond / 60;
-		seconds = TotalSecond % 60;
+		for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
+		{
+			TotalSecond = Entry.GameTime;
+			minutes = TotalSecond / 60;
+			seconds = TotalSecond % 60;
 
-		FString TimeString = FString::Printf(TEXT("%i:%i"), minutes, seconds);
-		ShowTimeText->SetText(FText::FromString(TimeString));
+			FString TimeString = FString::Printf(TEXT("%i:%i"), minutes, seconds);
+			ShowTimeText->SetText(FText::FromString(TimeString));
+		}
+		
 	}
 	
 }
