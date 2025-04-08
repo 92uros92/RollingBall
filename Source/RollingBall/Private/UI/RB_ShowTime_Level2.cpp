@@ -1,7 +1,7 @@
 // Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
 
 
-#include "UI/RB_ShowTime.h"
+#include "UI/RB_ShowTime_Level2.h"
 #include "RollingBallGameMode.h"
 #include "RB_SaveGame.h"
 #include "Components/TextBlock.h"
@@ -10,20 +10,19 @@
 
 
 
-
-void URB_ShowTime::SetGameTimeCount()
+void URB_ShowTime_Level2::SetGameTimeCount()
 {
 	SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
 
 	if (SaveGameInstance)
 	{
-		//** Find FirstLevel map name **//
+		//** Find SecondLevel map name **//
 		FMapTimeData* CurrentEntry = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
 			{
-				return Entry.MapName == Level1Map;
+				return Entry.MapName == Level2Map;
 			});
 
-		//** If found map name in MapTimes array then show the time from FirstLevel **//
+		//** If found map name in MapTimes array then show the time from SecondLevel **//
 		if (CurrentEntry)
 		{
 			for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
@@ -33,8 +32,9 @@ void URB_ShowTime::SetGameTimeCount()
 				seconds = TotalSecond % 60;
 
 				FString TimeString = FString::Printf(TEXT("%i:%i"), minutes, seconds);
-				ShowTimeText->SetText(FText::FromString(TimeString));
+				ShowTimeText_Level2->SetText(FText::FromString(TimeString));
 			}
 		}
 	}
+
 }

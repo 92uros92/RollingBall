@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "RB_ShowTime.generated.h"
+#include "RB_ShowTime_Level2.generated.h"
 
 
 
@@ -14,7 +14,7 @@ class URB_SaveGame;
 
 
 UCLASS()
-class ROLLINGBALL_API URB_ShowTime : public UUserWidget
+class ROLLINGBALL_API URB_ShowTime_Level2 : public UUserWidget
 {
 	GENERATED_BODY()
 	
@@ -25,13 +25,13 @@ public:
 	int32 seconds;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	UTextBlock* ShowTimeText;
+	UTextBlock* ShowTimeText_Level2;
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-	UTextBlock* DescriptionText;
+	UTextBlock* DescriptionText_Level2;
 
 	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
-	FString Level1Map = TEXT("FirstLevel");
+	FString Level2Map = TEXT("SecondLevel");
 
 	// ******** FUNCTIONS ******** //
 

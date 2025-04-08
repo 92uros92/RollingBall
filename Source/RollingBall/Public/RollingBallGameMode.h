@@ -77,10 +77,22 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Time")
 	int32 TotalGameTime;
 
+	UPROPERTY(VisibleAnywhere, Category = "Time")
+	int32 BestTime;
+
 	bool bGameEnded;
 
 	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
 	FString CurrentMap;
+
+	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
+	FString Level1Map = TEXT("FirstLevel");
+
+	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
+	FString Level2Map = TEXT("SecondLevel");
+
+	UPROPERTY(BlueprintReadOnly, Category = "MapTime")
+	FString Level3Map = TEXT("ThirdLevel");
 
 	//UPROPERTY(BlueprintReadOnly, Category = "MapTime")
 	//int32 MapTime;

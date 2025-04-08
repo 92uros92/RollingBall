@@ -31,7 +31,7 @@ void ARollingBallGameMode::Tick(float DeltaTime)
 	if (!bGameEnded)
 	{
 		int32 ElapsedTime = GetElapsedGameTime();
-		UE_LOG(LogTemp, Log, TEXT("Elapsed Time: %i seconds"), ElapsedTime);
+		//UE_LOG(LogTemp, Log, TEXT("Elapsed Time: %i seconds"), ElapsedTime);
 	}
 }
 
@@ -177,16 +177,31 @@ void ARollingBallGameMode::EndGame()
 		TotalGameTime = GetElapsedGameTime();
 
 		//** Add TotalGameTime into delegate OnGameTimeChanged **//
-		OnGameTimeChanged.Broadcast(TotalGameTime);
+		OnGameTimeChanged.Broadcast(EndGameTime);
 
 		//** Get map name **//
 		CurrentMap = GetWorld()->GetMapName();
-		//** Clean name **//
+		//** Clean map name when start again **//
 		CurrentMap.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
 
 		SaveGameTime();
 
 		//UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
+
+		////** Find map **//
+		//FMapTimeData* FindBestTime = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
+		//	{
+		//		return Entry.GameTime == EndGameTime;
+		//	});
+
+		//if (FindBestTime)
+		//{
+		//	if (EndGameTime < BestTime)
+		//	{
+		//		BestTime = EndGameTime;
+		//		OnGameTimeChanged.Broadcast(BestTime);
+		//	}
+		//}
 	}
 }
 
@@ -201,17 +216,18 @@ void ARollingBallGameMode::SaveGameTime()
 
 	if (SaveGameInstance)
 	{
-		// Find or add map time entry
+		//** Find map **//
 		FMapTimeData* CurrentEntry = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
 			{
 				return Entry.MapName == CurrentMap;
 			});
 
+		//** If found map in MapTimes array then save the time **//
 		if (CurrentEntry)
 		{
-			CurrentEntry->GameTime += TotalGameTime;
+			CurrentEntry->GameTime = TotalGameTime;
 		}
-		else
+		else //** If does not found map in MapTimes array then save new entry **//
 		{
 			FMapTimeData NewEntry;
 			NewEntry.MapName = CurrentMap;
@@ -238,8 +254,8 @@ void ARollingBallGameMode::LoadGameTime()
 		{
 			for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
 			{
-				// Display Entry.MapName and Entry.TimeSpent --> ADD MAP
 				TotalGameTime = Entry.GameTime;
+				CurrentMap = Entry.MapName;
 			}
 
 			//UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
