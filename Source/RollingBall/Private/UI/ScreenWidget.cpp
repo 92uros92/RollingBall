@@ -66,7 +66,7 @@ void UScreenWidget::SetGameTimeText()
 		int32 minutes = TotalSecond / 60;
 		int32 seconds = TotalSecond % 60;
 
-		FString TimeString = FString::Printf(TEXT("Time: %i:%i"), minutes, seconds);
+		FString TimeString = FString::Printf(TEXT("Time: %02d:%02d"), minutes, seconds);
 		GameTimeText->SetText(FText::FromString(TimeString));
 	}
 }

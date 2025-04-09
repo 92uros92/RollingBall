@@ -31,7 +31,7 @@ void URB_ShowTime_Level2::SetGameTimeCount()
 				minutes = TotalSecond / 60;
 				seconds = TotalSecond % 60;
 
-				FString TimeString = FString::Printf(TEXT("%i:%i"), minutes, seconds);
+				FString TimeString = FString::Printf(TEXT("%02d:%02d"), minutes, seconds);
 				ShowTimeText_Level2->SetText(FText::FromString(TimeString));
 			}
 		}

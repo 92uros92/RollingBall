@@ -20,6 +20,7 @@ ARollingBallGameMode::ARollingBallGameMode()
 
 	StartGameTime = 0;
 	EndGameTime = 0;
+	BestTime = 2147483647;
 	bGameEnded = false;
 }
 
@@ -94,8 +95,6 @@ void ARollingBallGameMode::CountCoin()
 void ARollingBallGameMode::GameOver()
 {
 	EndGame();
-
-	SaveGameTime();
 
 	if (IsValid(ScreenWidget))
 	{
@@ -177,14 +176,20 @@ void ARollingBallGameMode::EndGame()
 		TotalGameTime = GetElapsedGameTime();
 
 		//** Add TotalGameTime into delegate OnGameTimeChanged **//
-		OnGameTimeChanged.Broadcast(EndGameTime);
+		//OnGameTimeChanged.Broadcast(TotalGameTime);
 
 		//** Get map name **//
 		CurrentMap = GetWorld()->GetMapName();
 		//** Clean map name when start again **//
 		CurrentMap.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
 
-		SaveGameTime();
+		if (TotalGameTime < BestTime)
+		{
+			BestTime = TotalGameTime;
+			OnGameTimeChanged.Broadcast(BestTime);
+
+			SaveGameTime();
+		}
 
 		//UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
 
@@ -225,8 +230,17 @@ void ARollingBallGameMode::SaveGameTime()
 		//** If found map in MapTimes array then save the time **//
 		if (CurrentEntry)
 		{
-			CurrentEntry->GameTime = TotalGameTime;
+			CurrentEntry->GameTime = BestTime;
+
+			OnGameTimeChanged.Broadcast(BestTime);
 		}
+		//if (CurrentEntry && (TotalGameTime < BestTime))
+		//{
+		//	FMapTimeData BestTimeEntry;
+		//	BestTimeEntry.MapName = CurrentMap;
+		//	BestTimeEntry.GameTime = TotalGameTime;
+		//	SaveGameInstance->MapTimes.Add(NewEntry);
+		//}
 		else //** If does not found map in MapTimes array then save new entry **//
 		{
 			FMapTimeData NewEntry;
@@ -255,7 +269,9 @@ void ARollingBallGameMode::LoadGameTime()
 			for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
 			{
 				TotalGameTime = Entry.GameTime;
-				CurrentMap = Entry.MapName;
+				Level1Map = Entry.MapName;
+				Level2Map = Entry.MapName;
+				Level3Map = Entry.MapName;
 			}
 
 			//UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
