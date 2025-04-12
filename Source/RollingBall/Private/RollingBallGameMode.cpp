@@ -107,7 +107,17 @@ void ARollingBallGameMode::GameOver()
 
 		if (Widget)
 		{
-			Widget->AddToViewport();
+			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+
+			if (PlayerController)
+			{
+				Widget->AddToViewport();
+				Widget->SetPositionInViewport(FVector2D(500.0f, 20.0f));
+
+				FInputModeUIOnly UIInputData;
+				PlayerController->SetInputMode(UIInputData);
+				PlayerController->bShowMouseCursor = true;
+			}
 		}
 	}
 }
@@ -176,7 +186,7 @@ void ARollingBallGameMode::EndGame()
 		TotalGameTime = GetElapsedGameTime();
 
 		//** Add TotalGameTime into delegate OnGameTimeChanged **//
-		//OnGameTimeChanged.Broadcast(TotalGameTime);
+		OnGameTimeChanged.Broadcast(EndGameTime);
 
 		//** Get map name **//
 		CurrentMap = GetWorld()->GetMapName();

@@ -86,7 +86,7 @@ void ABallPawn::Tick(float DeltaTime)
 
 	//
 	//
-	//	1.) Add sound and particles
+	//
 	//	2.) Measure your time --> done
 	//		- save and load your time for every level difrent
 	//	4.) Pawn rotate in only one direction when teleport

@@ -3,6 +3,7 @@
 
 #include "SpawnEndGate.h"
 #include "OpenEndGate.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -44,6 +45,10 @@ void ASpawnEndGate::SpawnActor()
 
 	if (OpenEndGate)
 	{
+		if (EndGateSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), EndGateSound, GetActorLocation());
+		}
 		UE_LOG(LogTemp, Warning, TEXT("Spawned Actor: %s"), *OpenEndGate->GetName());
 	}
 	else

@@ -15,9 +15,9 @@
 ATeleportBox::ATeleportBox()
 {
 	PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
-	PawnLook->SetupAttachment(RootComponent);  // Attach to root
-	PawnLook->ArrowSize = 2.0f;                // Optional: make it bigger in editor
-	PawnLook->SetRelativeLocation(FVector(0, 0, 20));  // Optional: raise it above the box
+	PawnLook->SetupAttachment(RootComponent); 
+	PawnLook->ArrowSize = 2.0f;                
+	PawnLook->SetRelativeLocation(FVector(0, 0, 20));  
 
 	OnActorBeginOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterEnter);
 	OnActorEndOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterExit);

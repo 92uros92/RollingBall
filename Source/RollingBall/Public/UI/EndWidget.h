@@ -8,6 +8,9 @@
 
 
 
+class UTextBlock;
+
+
 UCLASS()
 class ROLLINGBALL_API UEndWidget : public UUserWidget
 {
@@ -15,5 +18,13 @@ class ROLLINGBALL_API UEndWidget : public UUserWidget
 	
 public:
 
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UTextBlock* ShowEndTimeText;
 
+	int32 EndTime;
+
+	// ******** FUNCTIONS ******** //
+
+	UFUNCTION(BlueprintCallable)
+	void SetShowEndTime();
 };

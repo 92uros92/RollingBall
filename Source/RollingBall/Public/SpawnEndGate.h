@@ -20,6 +20,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "SpawnActor")
 	TSubclassOf<AOpenEndGate> OpenEndGateClass;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* EndGateSound;
+
 	// ******** FUNCTIONS ******** //
 
 	ASpawnEndGate();
