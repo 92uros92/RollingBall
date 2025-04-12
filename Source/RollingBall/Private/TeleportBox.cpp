@@ -14,7 +14,10 @@
 
 ATeleportBox::ATeleportBox()
 {
-	// PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
+	PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
+	PawnLook->SetupAttachment(RootComponent);  // Attach to root
+	PawnLook->ArrowSize = 2.0f;                // Optional: make it bigger in editor
+	PawnLook->SetRelativeLocation(FVector(0, 0, 20));  // Optional: raise it above the box
 
 	OnActorBeginOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterEnter);
 	OnActorEndOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterExit);
@@ -57,8 +60,38 @@ void ATeleportBox::OnTeleporterExit(AActor* OverlappActor, AActor* OtherActor)
 {
 	if (OtherActor && OtherActor != this)
 	{
-		if (OtherTeleporter && !bIsTeleporting)
+		ABallPawn* MyPawn = Cast<ABallPawn>(OtherActor);
+
+		if (MyPawn && OtherTeleporter && !bIsTeleporting)
 		{
+			if (PawnLook)
+			{
+				// Get the rotation from the PawnLook arrow
+				FRotator ExitRotation = PawnLook->GetComponentRotation();
+
+				if (MyPawn->BallMesh)
+				{
+					// Stop any physics rotation and set the desired rotation
+					MyPawn->BallMesh->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+					MyPawn->BallMesh->SetPhysicsLinearVelocity(FVector::ZeroVector);
+					MyPawn->BallMesh->SetWorldRotation(ExitRotation);
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("BallMesh is null!"));
+				}
+
+				if (AController* Controller = MyPawn->GetController())
+				{
+					Controller->SetControlRotation(ExitRotation);
+				}
+			}
+			else
+			{
+				// Log if PawnLook is null
+				UE_LOG(LogTemp, Warning, TEXT("PawnLook is null!"));
+			}
+
 			OtherTeleporter->bIsTeleporting = false;
 		}
 	}

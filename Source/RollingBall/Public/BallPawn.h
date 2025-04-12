@@ -15,6 +15,11 @@ class ROLLINGBALL_API ABallPawn : public APawn
 
 public:
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	class UStaticMeshComponent* BallMesh;
+
+	// ******** FUNCTIONS ******** //
+
 	ABallPawn();
 
 	virtual void Tick(float DeltaTime) override;
@@ -26,9 +31,6 @@ public:
 
 
 protected:
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	class UStaticMeshComponent* BallMesh;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	class USpringArmComponent* SpringArm;

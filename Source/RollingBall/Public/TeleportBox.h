@@ -8,7 +8,8 @@
 
 
 class AActor;
-class UStaticMeshComponent;
+class UArrowComponent;
+class USoundBase;
 
 
 UCLASS()
@@ -22,10 +23,13 @@ public:
 	ATeleportBox* OtherTeleporter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
-	class USoundBase* TeleportSound;
+	USoundBase* TeleportSound;
 
-	/*UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Teleporter")
-	class UArrowComponent* PawnLook;*/
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//FRotator ExitFacingDirection = FRotator(0.0f, 90.0f, 0.0f);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Teleporter")
+	UArrowComponent* PawnLook;
 
 	UPROPERTY()
 	bool bIsTeleporting;
