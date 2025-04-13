@@ -26,5 +26,8 @@ public:
 	// ******** FUNCTIONS ******** //
 
 	UFUNCTION(BlueprintCallable)
-	void SetShowEndTime();
+	void InitializeWidget(class ARollingBallGameMode* RunGameMode);
+
+	UFUNCTION(BlueprintCallable)
+	void SetShowEndTime(int32 TimeCount);
 };
