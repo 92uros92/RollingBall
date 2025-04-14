@@ -8,6 +8,7 @@
 #include "RB_SaveGame.h"
 #include "UI/ScreenWidget.h"
 #include "UI/RollingBallHUD.h"
+#include "UI/EndWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -105,7 +106,7 @@ void ARollingBallGameMode::GameOver()
 	{
 		UUserWidget* Widget = CreateWidget(GetWorld(), EndWidgetClass);
 
-		if (Widget)
+		if (IsValid(Widget))
 		{
 			APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
@@ -196,7 +197,7 @@ void ARollingBallGameMode::EndGame()
 		if (TotalGameTime < BestTime)
 		{
 			BestTime = TotalGameTime;
-			OnGameTimeChanged.Broadcast(BestTime);
+			OnGameTimeChanged.Broadcast(TotalGameTime);
 
 			SaveGameTime();
 		}
@@ -240,9 +241,9 @@ void ARollingBallGameMode::SaveGameTime()
 		//** If found map in MapTimes array then save the time **//
 		if (CurrentEntry)
 		{
-			CurrentEntry->GameTime = BestTime;
+			CurrentEntry->GameTime = TotalGameTime;
 
-			OnGameTimeChanged.Broadcast(BestTime);
+			OnGameTimeChanged.Broadcast(TotalGameTime);
 		}
 		//if (CurrentEntry && (TotalGameTime < BestTime))
 		//{
@@ -284,7 +285,7 @@ void ARollingBallGameMode::LoadGameTime()
 				Level3Map = Entry.MapName;
 			}
 
-			//UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
+			UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
 		}
 	}
 	else
