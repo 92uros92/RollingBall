@@ -23,6 +23,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Path", meta = (ExposeOnSpawn = "true", MakeEditWidget = "true"))
 	TArray<FVector> ThePath;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* PlatformSound;
+
 	// ******** FUNCTIONS ******** //
 
 	ARB_MovingPlatform();

@@ -45,7 +45,12 @@ void ARB_BreakablePlatform::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, 
 	{
 		GetWorld()->GetTimerManager().SetTimer(BreakTimer, this, &ARB_BreakablePlatform::BreakPlatform, 2.5f, true);
 
-		UE_LOG(LogTemp, Warning, TEXT("Hurry up!! It will break!!"));
+		if (BreakSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), BreakSound, GetActorLocation());
+		}
+
+		//UE_LOG(LogTemp, Warning, TEXT("Hurry up!! It will break!!"));
 	}
 
 }

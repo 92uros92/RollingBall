@@ -25,6 +25,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* PlatformMesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundBase* BreakSound;
+
 	//bool bIsPlatformFractured;
 
 	// ******** FUNCTIONS ******** //

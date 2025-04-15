@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InterpToMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -32,6 +33,11 @@ void ARB_MovingPlatform::BeginPlay()
 	Super::BeginPlay();
 	
 	MovePlatform();
+
+	if (PlatformSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), PlatformSound, GetActorLocation(), 1.0f, 1.0f, 100.0f); // sound only play in radius 5 m
+	}
 }
 
 void ARB_MovingPlatform::Tick(float DeltaTime)
