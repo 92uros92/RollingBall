@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/InterpToMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundAttenuation.h"
 
 
 
@@ -22,7 +23,7 @@ ARB_MovingPlatform::ARB_MovingPlatform()
 
 	Movement = CreateDefaultSubobject<UInterpToMovementComponent>(TEXT("Movement Component"));
 
-	// Default parameters. **//
+	//** Default parameters. **//
 	Movement->Duration = 15.0f;
 	Movement->bSweep = true;
 	Movement->BehaviourType = EInterpToBehaviourType::PingPong;
@@ -36,7 +37,7 @@ void ARB_MovingPlatform::BeginPlay()
 
 	if (PlatformSound)
 	{
-		UGameplayStatics::PlaySoundAtLocation(GetWorld(), PlatformSound, GetActorLocation(), 1.0f, 1.0f, 100.0f); // sound only play in radius 5 m
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), PlatformSound, GetActorLocation(), 1.0f, 1.0f, 0.0f, MovingPlatformAttenuation); 
 	}
 }
 

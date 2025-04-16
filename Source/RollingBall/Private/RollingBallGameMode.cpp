@@ -194,13 +194,15 @@ void ARollingBallGameMode::EndGame()
 		//** Clean map name when start again **//
 		CurrentMap.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
 
-		if (TotalGameTime < BestTime)
-		{
-			BestTime = TotalGameTime;
-			OnGameTimeChanged.Broadcast(TotalGameTime);
+		SaveGameTime();
 
-			SaveGameTime();
-		}
+		//if (TotalGameTime < BestTime)
+		//{
+		//	BestTime = TotalGameTime;
+		//	OnGameTimeChanged.Broadcast(TotalGameTime);
+
+		//	SaveGameTime();
+		//}
 
 		//UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
 
@@ -279,13 +281,13 @@ void ARollingBallGameMode::LoadGameTime()
 		{
 			for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
 			{
+				CurrentMap = Entry.MapName;
 				TotalGameTime = Entry.GameTime;
-				Level1Map = Entry.MapName;
-				Level2Map = Entry.MapName;
-				Level3Map = Entry.MapName;
+				//Level2Map = Entry.MapName;
+				//Level3Map = Entry.MapName;
 			}
 
-			UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
+			//UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
 		}
 	}
 	else

@@ -11,6 +11,7 @@
 class UBoxComponent;
 class UStaticMeshComponent;
 class UInterpToMovementComponent;
+class USoundAttenuation;
 
 
 UCLASS()
@@ -25,6 +26,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
 	USoundBase* PlatformSound;
+
+	//** Need for playing sound in radius **//
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sound")
+	USoundAttenuation* MovingPlatformAttenuation;
 
 	// ******** FUNCTIONS ******** //
 
