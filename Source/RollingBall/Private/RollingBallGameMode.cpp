@@ -187,14 +187,14 @@ void ARollingBallGameMode::EndGame()
 		TotalGameTime = GetElapsedGameTime();
 
 		//** Add TotalGameTime into delegate OnGameTimeChanged **//
-		OnGameTimeChanged.Broadcast(EndGameTime);
+		OnGameTimeChanged.Broadcast(TotalGameTime);
 
 		//** Get map name **//
 		CurrentMap = GetWorld()->GetMapName();
 		//** Clean map name when start again **//
 		CurrentMap.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
 
-		SaveGameTime();
+		SaveGameTime(CurrentMap, TotalGameTime);
 
 		//if (TotalGameTime < BestTime)
 		//{
@@ -228,71 +228,60 @@ float ARollingBallGameMode::GetElapsedGameTime() const
 	return bGameEnded ? (EndGameTime - StartGameTime) : (GetWorld()->GetTimeSeconds() - StartGameTime);
 }
 
-void ARollingBallGameMode::SaveGameTime()
+void ARollingBallGameMode::SaveGameTime(FString LevelName, float TimeSpent)
 {
 	SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::CreateSaveGameObject(URB_SaveGame::StaticClass()));
 
 	if (SaveGameInstance)
 	{
-		//** Find map **//
-		FMapTimeData* CurrentEntry = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
-			{
-				return Entry.MapName == CurrentMap;
-			});
+		////** Find map **//
+		//FMapTimeData* CurrentEntry = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
+		//	{
+		//		return Entry.MapName == CurrentMap;
+		//	});
 
-		//** If found map in MapTimes array then save the time **//
-		if (CurrentEntry)
-		{
-			CurrentEntry->GameTime = TotalGameTime;
-
-			OnGameTimeChanged.Broadcast(TotalGameTime);
-		}
-		//if (CurrentEntry && (TotalGameTime < BestTime))
+		////** If found map in MapTimes array then save the time **//
+		//if (CurrentEntry)
 		//{
-		//	FMapTimeData BestTimeEntry;
-		//	BestTimeEntry.MapName = CurrentMap;
-		//	BestTimeEntry.GameTime = TotalGameTime;
+		//	CurrentEntry->GameTime = TotalGameTime;
+
+		//	OnGameTimeChanged.Broadcast(TotalGameTime);
+		//}
+		//else //** If does not found map in MapTimes array then save new entry **//
+		//{
+		//	FMapTimeData NewEntry;
+		//	NewEntry.MapName = CurrentMap;
+		//	NewEntry.GameTime = TotalGameTime;
 		//	SaveGameInstance->MapTimes.Add(NewEntry);
 		//}
-		else //** If does not found map in MapTimes array then save new entry **//
+
+
+		if (UGameplayStatics::DoesSaveGameExist("GameTimeSlot", 0))
 		{
-			FMapTimeData NewEntry;
-			NewEntry.MapName = CurrentMap;
-			NewEntry.GameTime = TotalGameTime;
-			SaveGameInstance->MapTimes.Add(NewEntry);
+			SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot("GameTimeSlot", 0));
 		}
 
-		//** Save total game time into SaveGameInstance class **//
-		//SaveGameInstance->GameTime = TotalGameTime;
-
-		//OnGameTimeChanged.Broadcast(TotalGameTime);
+		SaveGameInstance->MapTimes.FindOrAdd(CurrentMap) += TotalGameTime;
 
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("GameTimeSlot"), 0);
 	}
 }
 
-void ARollingBallGameMode::LoadGameTime()
+TMap<FString, int32> ARollingBallGameMode::LoadGameTime()
 {
 	if (UGameplayStatics::DoesSaveGameExist(TEXT("GameTimeSlot"), 0))
 	{
-		SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
+		LoadedGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
 
-		if (SaveGameInstance)
+		if (LoadedGameInstance)
 		{
-			for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
-			{
-				CurrentMap = Entry.MapName;
-				TotalGameTime = Entry.GameTime;
-				//Level2Map = Entry.MapName;
-				//Level3Map = Entry.MapName;
-			}
+			return LoadedGameInstance->MapTimes;
 
 			//UE_LOG(LogTemp, Warning, TEXT("SavedGameTime: %i"), TotalGameTime);
 		}
 	}
-	else
-	{
-		TotalGameTime = 0;
-	}
+
+	return TMap<FString, int32>();
+	
 }
 

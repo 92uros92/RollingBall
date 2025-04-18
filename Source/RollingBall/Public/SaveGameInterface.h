@@ -25,6 +25,8 @@ class ROLLINGBALL_API ISaveGameInterface
 
 public:
 
+	// ******** FUNCTIONS ******** //
+	
 	// Load game data from save file
 	UFUNCTION(BlueprintNativeEvent)
 	void OnLoadGame();

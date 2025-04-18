@@ -68,6 +68,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
 	URB_SaveGame* SaveGameInstance;
 
+	UPROPERTY(VisibleAnywhere, Category = "SaveGame")
+	URB_SaveGame* LoadedGameInstance;
+
 	UPROPERTY(VisibleAnywhere, Category = "Time")
 	int32 StartGameTime;
 
@@ -122,10 +125,10 @@ public:
 	void GoToPlayerCamera();
 
 	UFUNCTION(BlueprintCallable)
-	void SaveGameTime();
+	void SaveGameTime(FString LevelName, float TimeSpent);
 
 	UFUNCTION(BlueprintCallable)
-	void LoadGameTime();
+	TMap<FString, int32> LoadGameTime();
 
 	void EndGame();
 

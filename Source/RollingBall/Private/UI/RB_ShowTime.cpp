@@ -13,22 +13,17 @@
 
 void URB_ShowTime::SetGameTimeCount()
 {
-	SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
+	LoadedGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("GameTimeSlot"), 0));
 
-	if (SaveGameInstance)
+	if (LoadedGameInstance)
 	{
-		//** Find FirstLevel map name **//
-		FMapTimeData* CurrentEntry = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
-			{
-				return Entry.MapName == Level1Map;
-			});
+		TMap<FString, int32> Times = LoadedGameInstance->MapTimes;
 
-		//** If found map name in MapTimes array then show the time from FirstLevel **//
-		if (CurrentEntry)
+		for (const auto& Entry : Times)
 		{
-			for (const FMapTimeData& Entry : SaveGameInstance->MapTimes)
+			if (Entry.Key == Level1Map)
 			{
-				TotalSecond = Entry.GameTime;
+				TotalSecond = Entry.Value;
 				minutes = TotalSecond / 60;
 				seconds = TotalSecond % 60;
 

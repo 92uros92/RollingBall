@@ -41,6 +41,6 @@ public:
 protected:
 
 	UPROPERTY(BlueprintReadOnly)
-	URB_SaveGame* SaveGameInstance;
+	URB_SaveGame* LoadedGameInstance;
 
 };

@@ -29,8 +29,12 @@ class ROLLINGBALL_API URB_SaveGame : public USaveGame
 	
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MapTime")
-	TArray<FMapTimeData> MapTimes;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MapTime")
+	//TArray<FMapTimeData> MapTimes;
+
+	// Map of level names to play times (in seconds)
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TMap<FString, int32> MapTimes;
 
 	// ******** FUNCTIONS ******** //
 
