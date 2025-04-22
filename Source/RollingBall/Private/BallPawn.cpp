@@ -83,17 +83,6 @@ void ABallPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
-	//
-	//
-	//	
-	//	2.) Measure your time --> done
-	//		- save and load your time for every level difrent
-	//	4.) Pawn rotate in only one direction when teleport
-	//
-	//
-	//
-
 }
 
 void ABallPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

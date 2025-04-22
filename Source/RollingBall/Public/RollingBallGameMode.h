@@ -125,7 +125,7 @@ public:
 	void GoToPlayerCamera();
 
 	UFUNCTION(BlueprintCallable)
-	void SaveGameTime(FString LevelName, float TimeSpent);
+	void SaveGameTime(FString LevelName, int32 TimeSpent);
 
 	UFUNCTION(BlueprintCallable)
 	TMap<FString, int32> LoadGameTime();

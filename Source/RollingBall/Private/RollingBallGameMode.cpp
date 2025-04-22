@@ -196,30 +196,6 @@ void ARollingBallGameMode::EndGame()
 
 		SaveGameTime(CurrentMap, TotalGameTime);
 
-		//if (TotalGameTime < BestTime)
-		//{
-		//	BestTime = TotalGameTime;
-		//	OnGameTimeChanged.Broadcast(TotalGameTime);
-
-		//	SaveGameTime();
-		//}
-
-		//UE_LOG(LogTemp, Warning, TEXT("Total Game Time: %i seconds"), TotalGameTime);
-
-		////** Find map **//
-		//FMapTimeData* FindBestTime = SaveGameInstance->MapTimes.FindByPredicate([&](const FMapTimeData& Entry)
-		//	{
-		//		return Entry.GameTime == EndGameTime;
-		//	});
-
-		//if (FindBestTime)
-		//{
-		//	if (EndGameTime < BestTime)
-		//	{
-		//		BestTime = EndGameTime;
-		//		OnGameTimeChanged.Broadcast(BestTime);
-		//	}
-		//}
 	}
 }
 
@@ -228,9 +204,16 @@ float ARollingBallGameMode::GetElapsedGameTime() const
 	return bGameEnded ? (EndGameTime - StartGameTime) : (GetWorld()->GetTimeSeconds() - StartGameTime);
 }
 
-void ARollingBallGameMode::SaveGameTime(FString LevelName, float TimeSpent)
+void ARollingBallGameMode::SaveGameTime(FString LevelName, int32 TimeSpent)
 {
-	SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::CreateSaveGameObject(URB_SaveGame::StaticClass()));
+	if (UGameplayStatics::DoesSaveGameExist("GameTimeSlot", 0))
+	{
+		SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot("GameTimeSlot", 0));
+	}
+	else
+	{
+		SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::CreateSaveGameObject(URB_SaveGame::StaticClass()));
+	}
 
 	if (SaveGameInstance)
 	{
@@ -256,14 +239,14 @@ void ARollingBallGameMode::SaveGameTime(FString LevelName, float TimeSpent)
 		//}
 
 
-		if (UGameplayStatics::DoesSaveGameExist("GameTimeSlot", 0))
+		int32* ExistingTime = SaveGameInstance->MapTimes.Find(LevelName);
+
+		if (!ExistingTime || TimeSpent < *ExistingTime)
 		{
-			SaveGameInstance = Cast<URB_SaveGame>(UGameplayStatics::LoadGameFromSlot("GameTimeSlot", 0));
+			SaveGameInstance->MapTimes.FindOrAdd(LevelName) = TimeSpent;
+
+			UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("GameTimeSlot"), 0);
 		}
-
-		SaveGameInstance->MapTimes.FindOrAdd(CurrentMap) += TotalGameTime;
-
-		UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("GameTimeSlot"), 0);
 	}
 }
 
