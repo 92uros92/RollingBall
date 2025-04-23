@@ -14,10 +14,10 @@
 
 ATeleportBox::ATeleportBox()
 {
-	PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
-	PawnLook->SetupAttachment(RootComponent); 
-	PawnLook->ArrowSize = 2.0f;                
-	PawnLook->SetRelativeLocation(FVector(0, 0, 20));  
+	//PawnLook = CreateDefaultSubobject<UArrowComponent>(TEXT("PawnLook"));
+	//PawnLook->SetupAttachment(RootComponent); 
+	//PawnLook->ArrowSize = 2.0f;                
+	//PawnLook->SetRelativeLocation(FVector(0, 0, 20));  
 
 	OnActorBeginOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterEnter);
 	OnActorEndOverlap.AddDynamic(this, &ATeleportBox::OnTeleporterExit);
@@ -60,37 +60,37 @@ void ATeleportBox::OnTeleporterExit(AActor* OverlappActor, AActor* OtherActor)
 {
 	if (OtherActor && OtherActor != this)
 	{
-		ABallPawn* MyPawn = Cast<ABallPawn>(OtherActor);
+		//ABallPawn* MyPawn = Cast<ABallPawn>(OtherActor);
 
-		if (MyPawn && OtherTeleporter && !bIsTeleporting)
+		if (OtherTeleporter && !bIsTeleporting)
 		{
-			if (PawnLook)
-			{
-				// Get the rotation from the PawnLook arrow
-				FRotator ExitRotation = PawnLook->GetComponentRotation();
+			//if (PawnLook)
+			//{
+			//	// Get the rotation from the PawnLook arrow
+			//	FRotator ExitRotation = PawnLook->GetComponentRotation();
 
-				if (MyPawn->BallMesh)
-				{
-					// Stop any physics rotation and set the desired rotation
-					MyPawn->BallMesh->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
-					MyPawn->BallMesh->SetPhysicsLinearVelocity(FVector::ZeroVector);
-					MyPawn->BallMesh->SetWorldRotation(ExitRotation);
-				}
-				else
-				{
-					UE_LOG(LogTemp, Warning, TEXT("BallMesh is null!"));
-				}
+			//	if (MyPawn->BallMesh)
+			//	{
+			//		// Stop any physics rotation and set the desired rotation
+			//		MyPawn->BallMesh->SetPhysicsAngularVelocityInDegrees(FVector::ZeroVector);
+			//		MyPawn->BallMesh->SetPhysicsLinearVelocity(FVector::ZeroVector);
+			//		MyPawn->BallMesh->SetWorldRotation(ExitRotation);
+			//	}
+			//	else
+			//	{
+			//		UE_LOG(LogTemp, Warning, TEXT("BallMesh is null!"));
+			//	}
 
-				if (AController* Controller = MyPawn->GetController())
-				{
-					Controller->SetControlRotation(ExitRotation);
-				}
-			}
-			else
-			{
-				// Log if PawnLook is null
-				UE_LOG(LogTemp, Warning, TEXT("PawnLook is null!"));
-			}
+			//	if (AController* Controller = MyPawn->GetController())
+			//	{
+			//		Controller->SetControlRotation(ExitRotation);
+			//	}
+			//}
+			//else
+			//{
+			//	// Log if PawnLook is null
+			//	UE_LOG(LogTemp, Warning, TEXT("PawnLook is null!"));
+			//}
 
 			OtherTeleporter->bIsTeleporting = false;
 		}

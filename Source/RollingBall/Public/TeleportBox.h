@@ -28,8 +28,8 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//FRotator ExitFacingDirection = FRotator(0.0f, 90.0f, 0.0f);
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Teleporter")
-	UArrowComponent* PawnLook;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Teleporter")
+	//UArrowComponent* PawnLook;
 
 	UPROPERTY()
 	bool bIsTeleporting;
